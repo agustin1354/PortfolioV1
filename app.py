@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import json
+import os
 
 st.set_page_config(page_title="Portfolio Tracker de Bonos", page_icon="💵", layout="wide")
 
@@ -28,18 +29,32 @@ def save_data(df):
     except Exception as e:
         st.error(f"Error guardando bonos.json: {e}")
 
+def save_portfolio(portfolio):
+    try:
+        with open("portfolio.json", "w") as f:
+            json.dump(portfolio, f, indent=4)
+        st.success("¡Portfolio guardado exitosamente!")
+    except Exception as e:
+        st.error(f"Error guardando portfolio: {e}")
+
+def load_portfolio():
+    if os.path.exists("portfolio.json"):
+        with open("portfolio.json", "r") as f:
+            return json.load(f)
+    return []
+
 # ----------------------
 # Código principal
 # ----------------------
 
 st.title("💵 Portfolio Tracker de Bonos")
 
-# Cargar el JSON
+# Cargar bonos
 bonos_df = load_data()
 
-# Mostrar los bonos cargados
-st.subheader("📋 Bonos disponibles")
-st.dataframe(bonos_df)
+# Inicializar portfolio en sesión
+if "portfolio" not in st.session_state:
+    st.session_state["portfolio"] = load_portfolio()
 
 # Sidebar para agregar posiciones
 st.sidebar.header("Agregar una posición")
@@ -48,10 +63,7 @@ if not bonos_df.empty:
     bono_seleccionado = st.sidebar.selectbox("Seleccionar Bono", bonos_df["bono"].unique())
     cantidad = st.sidebar.number_input("Cantidad de títulos", min_value=0, value=0, step=1)
     
-    # Botón para agregar al portfolio
     if st.sidebar.button("Agregar al portfolio"):
-        if "portfolio" not in st.session_state:
-            st.session_state["portfolio"] = []
         precio_bono = bonos_df.loc[bonos_df["bono"] == bono_seleccionado, "precio"].values[0]
         st.session_state["portfolio"].append({
             "Bono": bono_seleccionado,
@@ -62,10 +74,32 @@ if not bonos_df.empty:
 else:
     st.sidebar.warning("No hay bonos cargados.")
 
+# Opciones adicionales en el sidebar
+st.sidebar.header("Opciones del Portfolio")
+
+# Borrar un bono específico
+if st.session_state["portfolio"]:
+    bonos_en_portfolio = [item["Bono"] for item in st.session_state["portfolio"]]
+    bono_a_borrar = st.sidebar.selectbox("Seleccionar Bono a borrar", bonos_en_portfolio)
+    if st.sidebar.button("Borrar Bono"):
+        st.session_state["portfolio"] = [item for item in st.session_state["portfolio"] if item["Bono"] != bono_a_borrar]
+        st.success(f"Bono {bono_a_borrar} borrado del portfolio.")
+
+# Reiniciar todo el portfolio
+if st.sidebar.button("🔄 Reiniciar Portfolio"):
+    st.session_state["portfolio"] = []
+    if os.path.exists("portfolio.json"):
+        os.remove("portfolio.json")
+    st.success("Portfolio reiniciado.")
+
+# Guardar el portfolio
+if st.sidebar.button("💾 Guardar Portfolio"):
+    save_portfolio(st.session_state["portfolio"])
+
 # Mostrar portfolio
 st.subheader("💼 Mi Portfolio")
 
-if "portfolio" in st.session_state and st.session_state["portfolio"]:
+if st.session_state["portfolio"]:
     portfolio_df = pd.DataFrame(st.session_state["portfolio"])
     st.dataframe(portfolio_df)
 
