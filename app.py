@@ -1,74 +1,100 @@
-pip install -r requirements.txt
+pip install streamlit playwright pandas matplotlib
+playwright install --with-deps
 
 import streamlit as st
 import pandas as pd
-import json
-import os
+import asyncio
+from playwright.async_api import async_playwright
+import matplotlib.pyplot as plt
 
-# Cargar los bonos scrapeados
-with open("bonos.json", "r") as f:
-    bonos_data = json.load(f)
+st.set_page_config(page_title="Portfolio de Bonos", page_icon="💰", layout="centered")
 
-# Convertir a DataFrame
-bonos_df = pd.DataFrame(bonos_data)
+# -------- Scraping Function --------
+async def scrape():
+    data = []
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=True)
+        page = await browser.new_page()
+        await page.goto("https://iol.invertironline.com/mercado/cotizaciones/argentina/bonos/todos")
+        await page.wait_for_load_state("networkidle")
+        for page_num in range(1, 4):
+            await page.wait_for_selector("table")
+            rows = await page.locator("table tbody tr").all()
+            for row in rows:
+                cols = await row.locator("td").all_inner_texts()
+                if len(cols) >= 2:
+                    nombre = cols[0].strip()
+                    precio = cols[1].strip().replace(".", "").replace(",", ".")
+                    try:
+                        precio = float(precio)
+                        data.append({"Bono": nombre, "Precio": precio})
+                    except ValueError:
+                        continue
+            if page_num < 3:
+                next_button = page.locator(".dataTables_paginate .paginate_button.next:not(.disabled)")
+                if await next_button.is_visible():
+                    await next_button.click()
+                    await page.wait_for_load_state("networkidle")
+                else:
+                    break
+        await browser.close()
+    return pd.DataFrame(data)
 
-# Cargar portfolio guardado si existe
-PORTFOLIO_FILE = "mi_portfolio.json"
-if os.path.exists(PORTFOLIO_FILE):
-    with open(PORTFOLIO_FILE, "r") as f:
-        saved_portfolio = json.load(f)
-else:
-    saved_portfolio = []
+@st.cache_resource
+def load_data():
+    return asyncio.run(scrape())
 
-# Función para guardar el portfolio actual
-def guardar_portfolio(portfolio):
-    with open(PORTFOLIO_FILE, "w") as f:
-        json.dump(portfolio, f, indent=4)
-
+# -------- App --------
 st.title("📈 Portfolio Tracker de Bonos")
 
-# Opciones para agregar nuevo bono al portfolio
-st.subheader("➕ Agregar nuevo bono")
+bonos_df = load_data()
 
-with st.form(key="agregar_bono_form"):
-    bono = st.selectbox("Seleccionar bono", bonos_df['bono'])
-    cantidad = st.number_input(f"Cantidad de {bono}", min_value=0.0, step=1.0)
-    submit_button = st.form_submit_button(label="Agregar al portfolio")
+# Inicializar session_state
+if "portfolio" not in st.session_state:
+    st.session_state.portfolio = []
 
-    if submit_button:
-        precio = bonos_df.loc[bonos_df['bono'] == bono, 'precio'].values[0]
-        valor_total = cantidad * precio
+st.sidebar.header("Agregar Bono al Portfolio")
 
-        nuevo_bono = {
-            "Bono": bono,
-            "Cantidad": cantidad,
-            "Precio Actual": precio,
-            "Valor de la posición": valor_total
-        }
+# Inputs
+bono_seleccionado = st.sidebar.selectbox("Seleccionar Bono", bonos_df["Bono"].unique())
+cantidad = st.sidebar.number_input("Cantidad", min_value=1, value=1, step=1)
 
-        saved_portfolio.append(nuevo_bono)
-        guardar_portfolio(saved_portfolio)
-        st.success(f"✅ {bono} agregado correctamente al portfolio.")
+# Botón agregar
+if st.sidebar.button("➕ Agregar"):
+    precio = bonos_df.loc[bonos_df["Bono"] == bono_seleccionado, "Precio"].values[0]
+    st.session_state.portfolio.append({
+        "Bono": bono_seleccionado,
+        "Cantidad": cantidad,
+        "Precio": precio,
+        "Valor de la posición": precio * cantidad
+    })
+    st.success(f"{cantidad} x {bono_seleccionado} agregado al portfolio.")
 
-# Mostrar el portfolio actual
-st.subheader("🧾 Mi Portfolio Actual")
+# Botón limpiar
+if st.sidebar.button("🗑️ Limpiar Portfolio"):
+    st.session_state.portfolio = []
+    st.warning("Portfolio vacío.")
 
-if saved_portfolio:
-    portfolio_df = pd.DataFrame(saved_portfolio)
+# Mostrar portfolio
+st.subheader("📜 Mi Portfolio")
+
+if st.session_state.portfolio:
+    portfolio_df = pd.DataFrame(st.session_state.portfolio)
     st.dataframe(portfolio_df)
 
-    total = portfolio_df["Valor de la posición"].sum()
-    st.success(f"💰 Valor total del portfolio: ${total:,.2f}")
+    # Valor total
+    valor_total = portfolio_df["Valor de la posición"].sum()
+    st.metric("💵 Valor Total del Portfolio", f"USD {valor_total:,.2f}")
 
-    # Graficar distribución
+    # Gráfico
+    fig, ax = plt.subplots(figsize=(6,6))
+    portfolio_df.set_index('Bono')["Valor de la posición"].plot.pie(
+        autopct='%1.1f%%', startangle=90, ax=ax
+    )
+    ax.set_ylabel('')
     st.subheader("📊 Distribución del Portfolio")
-    fig = portfolio_df.set_index('Bono')["Valor de la posición"].plot.pie(autopct='%1.1f%%', figsize=(6,6)).get_figure()
     st.pyplot(fig)
-
-    # Botón para limpiar todo
-    if st.button("🗑️ Borrar todo el portfolio"):
-        saved_portfolio = []
-        guardar_portfolio(saved_portfolio)
-        st.success("Portfolio eliminado correctamente.")
 else:
-    st.info("Todavía no agregaste bonos a tu portfolio.")
+    st.info("Todavía no agregaste bonos al portfolio.")
+
+
