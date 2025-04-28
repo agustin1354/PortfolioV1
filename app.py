@@ -1,72 +1,32 @@
-import os
-os.system('playwright install chromium')
+# app.py
+
 import streamlit as st
-import pandas as pd
-import asyncio
-from playwright.async_api import async_playwright
+import json
 
-# Función de scraping
-@st.cache_data(ttl=3600)  # cachea por 1 hora
-def scrape_bonos():
-    async def scrape():
-        all_data = []
-        async with async_playwright() as p:
-            browser = await p.chromium.launch(headless=True)
-            page = await browser.new_page()
-            await page.goto("https://iol.invertironline.com/mercado/cotizaciones/argentina/bonos/todos")
-            await page.wait_for_load_state("networkidle")
-            
-            for page_num in range(1, 4):
-                await page.wait_for_selector("table")
-                rows = await page.locator("table tbody tr").all()
-                for row in rows:
-                    cols = await row.locator("td").all_inner_texts()
-                    if len(cols) >= 2:
-                        nombre = cols[0].strip()
-                        precio = cols[1].replace(",", ".").strip()
-                        try:
-                            precio = float(precio)
-                            all_data.append((nombre, precio))
-                        except ValueError:
-                            continue
-                if page_num < 3:
-                    next_page_locator = page.locator(".dataTables_paginate .paginate_button.next:not(.disabled)")
-                    if await next_page_locator.is_visible():
-                        await next_page_locator.click()
-                        await page.wait_for_load_state("networkidle")
-                    else:
-                        break
-            await browser.close()
-        return all_data
-    
-    bonos = asyncio.run(scrape())
-    df = pd.DataFrame(bonos, columns=["Bono", "Último Precio"])
-    return df
+# 📦 Cargar bonos
+with open('bonos.json', 'r') as f:
+    bonos = json.load(f)
 
-# Título
-st.title("💵 Calculadora de Bonos - IOL")
+# 📋 Armar lista de opciones
+opciones_bonos = [item['bono'] for item in bonos]
 
-# Botón para actualizar los bonos
-if st.button("🔄 Actualizar Bonos"):
-    st.cache_data.clear()
-    st.experimental_rerun()
+st.title("Calculadora de Bonos 🇦🇷")
 
-# Obtener los bonos
-df_bonos = scrape_bonos()
+# 🧩 Selección de bono
+bono_seleccionado = st.selectbox("Seleccioná un bono:", opciones_bonos)
 
-if not df_bonos.empty:
-    # Dropdown para seleccionar bono
-    bono_seleccionado = st.selectbox("Selecciona un bono:", df_bonos["Bono"])
+# 🔍 Buscar precio del bono seleccionado
+precio_bono = next((item['precio'] for item in bonos if item['bono'] == bono_seleccionado), None)
 
-    # Mostrar precio
-    precio_bono = df_bonos[df_bonos["Bono"] == bono_seleccionado]["Último Precio"].values[0]
-    st.write(f"💲 Último precio: {precio_bono:.2f}")
+# ✍️ Ingresar cantidad
+cantidad = st.number_input("Cantidad:", min_value=1, step=1)
 
-    # Input de cantidad
-    cantidad = st.number_input("Cantidad de bonos:", min_value=1, value=1)
+# 💵 Mostrar precio
+if precio_bono is not None:
+    st.write(f"**Precio actual del bono:** ${precio_bono:.2f}")
 
-    # Calcular total
-    total = precio_bono * cantidad
-    st.success(f"💰 Total: {total:.2f}")
+    # 🧮 Calcular total
+    total = cantidad * precio_bono
+    st.write(f"**Valor total:** ${total:.2f}")
 else:
-    st.warning("No se encontraron bonos. Intenta actualizar.")
+    st.error("No se encontró precio para este bono.")
