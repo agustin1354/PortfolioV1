@@ -1,45 +1,16 @@
-import streamlit as st
+   import streamlit as st
 import pandas as pd
-import asyncio
-from playwright.async_api import async_playwright
+import json
 import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="Portfolio de Bonos", page_icon="💰", layout="centered")
 
-# -------- Scraping Function --------
-async def scrape():
-    data = []
-    async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
-        page = await browser.new_page()
-        await page.goto("https://iol.invertironline.com/mercado/cotizaciones/argentina/bonos/todos")
-        await page.wait_for_load_state("networkidle")
-        for page_num in range(1, 4):
-            await page.wait_for_selector("table")
-            rows = await page.locator("table tbody tr").all()
-            for row in rows:
-                cols = await row.locator("td").all_inner_texts()
-                if len(cols) >= 2:
-                    nombre = cols[0].strip()
-                    precio = cols[1].strip().replace(".", "").replace(",", ".")
-                    try:
-                        precio = float(precio)
-                        data.append({"Bono": nombre, "Precio": precio})
-                    except ValueError:
-                        continue
-            if page_num < 3:
-                next_button = page.locator(".dataTables_paginate .paginate_button.next:not(.disabled)")
-                if await next_button.is_visible():
-                    await next_button.click()
-                    await page.wait_for_load_state("networkidle")
-                else:
-                    break
-        await browser.close()
-    return pd.DataFrame(data)
-
-@st.cache_resource
+# -------- Load local JSON --------
+@st.cache_data
 def load_data():
-    return asyncio.run(scrape())
+    with open("bonos.json", "r") as f:
+        data = json.load(f)
+    return pd.DataFrame(data)
 
 # -------- App --------
 st.title("📈 Portfolio Tracker de Bonos")
@@ -93,5 +64,3 @@ if st.session_state.portfolio:
     st.pyplot(fig)
 else:
     st.info("Todavía no agregaste bonos al portfolio.")
-
-
