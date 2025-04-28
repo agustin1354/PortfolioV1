@@ -74,16 +74,8 @@ if not bonos_df.empty:
 else:
     st.sidebar.warning("No hay bonos cargados.")
 
-# Opciones adicionales en el sidebar
+# Opciones generales en sidebar
 st.sidebar.header("Opciones del Portfolio")
-
-# Borrar un bono específico
-if st.session_state["portfolio"]:
-    bonos_en_portfolio = [item["Bono"] for item in st.session_state["portfolio"]]
-    bono_a_borrar = st.sidebar.selectbox("Seleccionar Bono a borrar", bonos_en_portfolio)
-    if st.sidebar.button("Borrar Bono"):
-        st.session_state["portfolio"] = [item for item in st.session_state["portfolio"] if item["Bono"] != bono_a_borrar]
-        st.success(f"Bono {bono_a_borrar} borrado del portfolio.")
 
 # Reiniciar todo el portfolio
 if st.sidebar.button("🔄 Reiniciar Portfolio"):
@@ -103,22 +95,44 @@ if st.session_state["portfolio"]:
     portfolio_df = pd.DataFrame(st.session_state["portfolio"])
     st.dataframe(portfolio_df)
 
+    # Borrar un bono específico
+    st.write("### ✏️ Editar o Borrar Bonos")
+    bonos_en_portfolio = [item["Bono"] for item in st.session_state["portfolio"]]
+    bono_a_modificar = st.selectbox("Seleccionar Bono", bonos_en_portfolio)
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        nueva_cantidad = st.number_input("Nueva cantidad", min_value=0, value=1, step=1, key="editar_cantidad")
+        if st.button("Actualizar Cantidad"):
+            for item in st.session_state["portfolio"]:
+                if item["Bono"] == bono_a_modificar:
+                    item["Cantidad"] = nueva_cantidad
+                    item["Valor de la posición"] = nueva_cantidad * item["Precio actual"]
+            st.success(f"Cantidad de {bono_a_modificar} actualizada.")
+
+    with col2:
+        if st.button("🗑️ Borrar Bono"):
+            st.session_state["portfolio"] = [item for item in st.session_state["portfolio"] if item["Bono"] != bono_a_modificar]
+            st.success(f"Bono {bono_a_modificar} borrado del portfolio.")
+
     # Total del Portfolio
-    total_valor = portfolio_df["Valor de la posición"].sum()
+    total_valor = sum(item["Valor de la posición"] for item in st.session_state["portfolio"])
     st.metric("Valor Total del Portfolio", f"${total_valor:,.2f}")
 
     # Gráfico de torta
     st.subheader("📊 Distribución del Portfolio")
     import matplotlib.pyplot as plt
 
-    fig, ax = plt.subplots()
-    portfolio_df.set_index('Bono')["Valor de la posición"].plot.pie(autopct='%1.1f%%', ax=ax, figsize=(6, 6))
-    ax.set_ylabel("")
-    st.pyplot(fig)
+    if st.session_state["portfolio"]:  # Verificar que quede algo después de borrar
+        portfolio_df = pd.DataFrame(st.session_state["portfolio"])
+        fig, ax = plt.subplots()
+        portfolio_df.set_index('Bono')["Valor de la posición"].plot.pie(autopct='%1.1f%%', ax=ax, figsize=(6, 6))
+        ax.set_ylabel("")
+        st.pyplot(fig)
 else:
     st.info("Todavía no agregaste bonos al portfolio.")
 
 # ----------------------
 # Fin del archivo
 # ----------------------
-
