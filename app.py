@@ -6,11 +6,15 @@ import matplotlib.pyplot as plt
 st.set_page_config(page_title="Portfolio de Bonos", page_icon="💰", layout="centered")
 
 # -------- Load local JSON --------
+
 @st.cache_data
 def load_data():
     with open("bonos.json", "r") as f:
         data = json.load(f)
+    if isinstance(data, dict):  # Si es un diccionario, lo convertimos en lista de una fila
+        data = [data]
     return pd.DataFrame(data)
+
 
 # -------- App --------
 st.title("📈 Portfolio Tracker de Bonos")
