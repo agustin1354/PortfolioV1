@@ -1,4 +1,4 @@
-   import streamlit as st
+import streamlit as st
 import pandas as pd
 import json
 import matplotlib.pyplot as plt
@@ -64,3 +64,4 @@ if st.session_state.portfolio:
     st.pyplot(fig)
 else:
     st.info("Todavía no agregaste bonos al portfolio.")
+
