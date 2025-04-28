@@ -52,7 +52,7 @@ if not bonos_df.empty:
     if st.sidebar.button("Agregar al portfolio"):
         if "portfolio" not in st.session_state:
             st.session_state["portfolio"] = []
-        precio_bono = bonos_df.loc[bonos_df["Bono"] == bono_seleccionado, "precio"].values[0]
+        precio_bono = bonos_df.loc[bonos_df["bono"] == bono_seleccionado, "precio"].values[0]
         st.session_state["portfolio"].append({
             "Bono": bono_seleccionado,
             "Cantidad": cantidad,
