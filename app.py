@@ -19,7 +19,6 @@ def load_data():
 # -------- App --------
 st.title("📈 Portfolio Tracker de Bonos")
 
-bonos_df = load_data()
 st.write(bonos_df)
 
 
