@@ -1,0 +1,310 @@
+[
+    {
+        "bono": "AE38C",
+        "precio": 70.25
+    },
+    {
+        "bono": "AE38D",
+        "precio": 71.12
+    },
+    {
+        "bono": "AL29C",
+        "precio": 71.17
+    },
+    {
+        "bono": "AL29D",
+        "precio": 71.99
+    },
+    {
+        "bono": "AL30C",
+        "precio": 67.1
+    },
+    {
+        "bono": "AL30D",
+        "precio": 67.63
+    },
+    {
+        "bono": "AL35C",
+        "precio": 67.96
+    },
+    {
+        "bono": "AL35D",
+        "precio": 68.9
+    },
+    {
+        "bono": "AL41C",
+        "precio": 63.45
+    },
+    {
+        "bono": "AL41D",
+        "precio": 64.4
+    },
+    {
+        "bono": "BA7DC",
+        "precio": 64.76
+    },
+    {
+        "bono": "BA7DD",
+        "precio": 65.88
+    },
+    {
+        "bono": "BAO25",
+        "precio": 43.52
+    },
+    {
+        "bono": "BB7DD",
+        "precio": 59.25
+    },
+    {
+        "bono": "BDC28",
+        "precio": 115.4
+    },
+    {
+        "bono": "BPA7C",
+        "precio": 98.65
+    },
+    {
+        "bono": "BPA7D",
+        "precio": 100.3
+    },
+    {
+        "bono": "BPB7C",
+        "precio": 96.4
+    },
+    {
+        "bono": "BPB7D",
+        "precio": 97.94
+    },
+    {
+        "bono": "BPC7C",
+        "precio": 92.7
+    },
+    {
+        "bono": "BPC7D",
+        "precio": 93.9
+    },
+    {
+        "bono": "BPD7C",
+        "precio": 92.7
+    },
+    {
+        "bono": "BPD7D",
+        "precio": 93.76
+    },
+    {
+        "bono": "BPJ5C",
+        "precio": 25.96
+    },
+    {
+        "bono": "BPJ5D",
+        "precio": 26.58
+    },
+    {
+        "bono": "BPY6C",
+        "precio": 96.32
+    },
+    {
+        "bono": "BPY6D",
+        "precio": 97.72
+    },
+    {
+        "bono": "CO26D",
+        "precio": 23.49
+    },
+    {
+        "bono": "EF25D",
+        "precio": 62.5
+    },
+    {
+        "bono": "GD29C",
+        "precio": 73.42
+    },
+    {
+        "bono": "GD29D",
+        "precio": 74.6
+    },
+    {
+        "bono": "GD30C",
+        "precio": 68.3
+    },
+    {
+        "bono": "GD30D",
+        "precio": 69.0
+    },
+    {
+        "bono": "GD35C",
+        "precio": 68.79
+    },
+    {
+        "bono": "GD35D",
+        "precio": 69.55
+    },
+    {
+        "bono": "GD38C",
+        "precio": 72.74
+    },
+    {
+        "bono": "GD38D",
+        "precio": 73.73
+    },
+    {
+        "bono": "GD41C",
+        "precio": 63.61
+    },
+    {
+        "bono": "GD41D",
+        "precio": 64.5
+    },
+    {
+        "bono": "GD46C",
+        "precio": 66.08
+    },
+    {
+        "bono": "GD46D",
+        "precio": 66.64
+    },
+    {
+        "bono": "NDT5D",
+        "precio": 74.8
+    },
+    {
+        "bono": "PBY26",
+        "precio": 110.0
+    },
+    {
+        "bono": "PM29C",
+        "precio": 58.1
+    },
+    {
+        "bono": "PM29D",
+        "precio": 58.75
+    },
+    {
+        "bono": "PR17",
+        "precio": 518.9
+    },
+    {
+        "bono": "T13F6",
+        "precio": 113.45
+    },
+    {
+        "bono": "T15D5",
+        "precio": 140.95
+    },
+    {
+        "bono": "T15E7",
+        "precio": 101.0
+    },
+    {
+        "bono": "T17O5",
+        "precio": 137.7
+    },
+    {
+        "bono": "T30E6",
+        "precio": 112.35
+    },
+    {
+        "bono": "T30J6",
+        "precio": 101.65
+    },
+    {
+        "bono": "TG25",
+        "precio": 290.0
+    },
+    {
+        "bono": "TO26",
+        "precio": 81.07
+    },
+    {
+        "bono": "TTD26",
+        "precio": 101.55
+    },
+    {
+        "bono": "TTJ26",
+        "precio": 102.9
+    },
+    {
+        "bono": "TTM26",
+        "precio": 104.4
+    },
+    {
+        "bono": "TTS26",
+        "precio": 101.9
+    },
+    {
+        "bono": "TVPP",
+        "precio": 20.15
+    },
+    {
+        "bono": "TX26D",
+        "precio": 1.61
+    },
+    {
+        "bono": "TX28D",
+        "precio": 1.51
+    },
+    {
+        "bono": "TX31",
+        "precio": 910.0
+    },
+    {
+        "bono": "TXM6D",
+        "precio": 0.13
+    },
+    {
+        "bono": "TY27P",
+        "precio": 119.45
+    },
+    {
+        "bono": "TZX25",
+        "precio": 232.05
+    },
+    {
+        "bono": "TZX26",
+        "precio": 251.15
+    },
+    {
+        "bono": "TZX27",
+        "precio": 228.75
+    },
+    {
+        "bono": "TZX28",
+        "precio": 207.3
+    },
+    {
+        "bono": "TZX6D",
+        "precio": 0.22
+    },
+    {
+        "bono": "TZXD5",
+        "precio": 197.15
+    },
+    {
+        "bono": "TZXD6",
+        "precio": 177.35
+    },
+    {
+        "bono": "TZXD7",
+        "precio": 161.25
+    },
+    {
+        "bono": "TZXM6",
+        "precio": 152.95
+    },
+    {
+        "bono": "TZXM7",
+        "precio": 128.95
+    },
+    {
+        "bono": "TZXO5",
+        "precio": 114.1
+    },
+    {
+        "bono": "TZXO6",
+        "precio": 101.7
+    },
+    {
+        "bono": "TZXY5",
+        "precio": 117.85
+    }
+]
