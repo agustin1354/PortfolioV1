@@ -1,32 +1,45 @@
-# app.py
-
 import streamlit as st
+import pandas as pd
 import json
 
-# 📦 Cargar bonos
-with open('bonos.json', 'r') as f:
-    bonos = json.load(f)
+# Cargar los bonos desde el JSON
+with open("bonos.json", "r") as f:
+    bonos_data = json.load(f)
 
-# 📋 Armar lista de opciones
-opciones_bonos = [item['bono'] for item in bonos]
+# Convertir a DataFrame
+bonos_df = pd.DataFrame(bonos_data)
 
-st.title("Calculadora de Bonos 🇦🇷")
+st.title("📈 Portfolio Tracker de Bonos")
 
-# 🧩 Selección de bono
-bono_seleccionado = st.selectbox("Seleccioná un bono:", opciones_bonos)
+# Seleccionar cantidad de bonos que querés agregar
+num_bonos = st.number_input("¿Cuántos bonos querés agregar a tu portfolio?", min_value=1, max_value=50, value=1)
 
-# 🔍 Buscar precio del bono seleccionado
-precio_bono = next((item['precio'] for item in bonos if item['bono'] == bono_seleccionado), None)
+portfolio = []
 
-# ✍️ Ingresar cantidad
-cantidad = st.number_input("Cantidad:", min_value=1, step=1)
+# Para cada bono, seleccionás y ponés cantidad
+for i in range(num_bonos):
+    st.subheader(f"Bono #{i+1}")
 
-# 💵 Mostrar precio
-if precio_bono is not None:
-    st.write(f"**Precio actual del bono:** ${precio_bono:.2f}")
+    bono = st.selectbox(f"Seleccionar bono #{i+1}", bonos_df['bono'], key=f"bono_{i}")
+    cantidad = st.number_input(f"Cantidad de {bono}", min_value=0.0, step=1.0, key=f"cantidad_{i}")
 
-    # 🧮 Calcular total
-    total = cantidad * precio_bono
-    st.write(f"**Valor total:** ${total:.2f}")
-else:
-    st.error("No se encontró precio para este bono.")
+    # Precio del bono
+    precio = bonos_df.loc[bonos_df['bono'] == bono, 'precio'].values[0]
+    valor_total = cantidad * precio
+
+    portfolio.append({
+        "Bono": bono,
+        "Cantidad": cantidad,
+        "Precio Actual": precio,
+        "Valor de la posición": valor_total
+    })
+
+# Mostrar resumen del portfolio
+st.subheader("🧾 Resumen de Portfolio")
+
+portfolio_df = pd.DataFrame(portfolio)
+st.dataframe(portfolio_df)
+
+# Mostrar total general
+total = portfolio_df["Valor de la posición"].sum()
+st.success(f"💰 Valor total del portfolio: ${total:,.2f}")
