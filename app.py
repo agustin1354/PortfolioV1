@@ -61,7 +61,7 @@ st.sidebar.header("Agregar una posición")
 
 if not bonos_df.empty:
     bono_seleccionado = st.sidebar.selectbox("Seleccionar Bono", bonos_df["bono"].unique())
-    cantidad = st.sidebar.number_input("Cantidad de títulos", min_value=0, value=0, step=1)
+    cantidad = st.sidebar.number_input("Cantidad de títulos", min_value=0, value=0, step=1, key="cantidad_agregar")
     
     if st.sidebar.button("Agregar al portfolio"):
         precio_bono = bonos_df.loc[bonos_df["bono"] == bono_seleccionado, "precio"].values[0]
@@ -92,32 +92,37 @@ if st.sidebar.button("💾 Guardar Portfolio"):
 st.subheader("💼 Mi Portfolio")
 
 if st.session_state["portfolio"]:
-    portfolio_df = pd.DataFrame(st.session_state["portfolio"])
-    st.dataframe(portfolio_df)
+    total_valor = sum(item["Valor de la posición"] for item in st.session_state["portfolio"])
 
-    # Borrar un bono específico
-    st.write("### ✏️ Editar o Borrar Bonos")
-    bonos_en_portfolio = [item["Bono"] for item in st.session_state["portfolio"]]
-    bono_a_modificar = st.selectbox("Seleccionar Bono", bonos_en_portfolio)
+    # Mostrar cada bono con opciones individuales
+    for idx, item in enumerate(st.session_state["portfolio"]):
+        with st.expander(f"{item['Bono']} - {item['Cantidad']} títulos - ${item['Valor de la posición']:,.2f}", expanded=True):
+            col1, col2, col3 = st.columns([2, 2, 1])
 
-    col1, col2 = st.columns(2)
+            with col1:
+                nueva_cantidad = st.number_input(
+                    f"Editar cantidad ({item['Bono']})", 
+                    min_value=0, 
+                    value=item['Cantidad'], 
+                    step=1, 
+                    key=f"editar_{idx}"
+                )
+                if st.button(f"Actualizar {item['Bono']}", key=f"update_{idx}"):
+                    st.session_state["portfolio"][idx]["Cantidad"] = nueva_cantidad
+                    st.session_state["portfolio"][idx]["Valor de la posición"] = nueva_cantidad * item["Precio actual"]
+                    st.success(f"Cantidad de {item['Bono']} actualizada.")
 
-    with col1:
-        nueva_cantidad = st.number_input("Nueva cantidad", min_value=0, value=1, step=1, key="editar_cantidad")
-        if st.button("Actualizar Cantidad"):
-            for item in st.session_state["portfolio"]:
-                if item["Bono"] == bono_a_modificar:
-                    item["Cantidad"] = nueva_cantidad
-                    item["Valor de la posición"] = nueva_cantidad * item["Precio actual"]
-            st.success(f"Cantidad de {bono_a_modificar} actualizada.")
+            with col2:
+                if st.button(f"🗑️ Borrar {item['Bono']}", key=f"delete_{idx}"):
+                    st.session_state["portfolio"].pop(idx)
+                    st.success(f"Bono {item['Bono']} eliminado del portfolio.")
+                    st.experimental_rerun()  # Refrescar inmediatamente la pantalla
 
-    with col2:
-        if st.button("🗑️ Borrar Bono"):
-            st.session_state["portfolio"] = [item for item in st.session_state["portfolio"] if item["Bono"] != bono_a_modificar]
-            st.success(f"Bono {bono_a_modificar} borrado del portfolio.")
+            with col3:
+                st.metric(label="Valor actual", value=f"${item['Valor de la posición']:,.2f}")
 
     # Total del Portfolio
-    total_valor = sum(item["Valor de la posición"] for item in st.session_state["portfolio"])
+    st.subheader("📈 Resumen del Portfolio")
     st.metric("Valor Total del Portfolio", f"${total_valor:,.2f}")
 
     # Gráfico de torta
@@ -136,3 +141,4 @@ else:
 # ----------------------
 # Fin del archivo
 # ----------------------
+
