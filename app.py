@@ -1,6 +1,3 @@
-pip install streamlit playwright pandas matplotlib
-playwright install --with-deps
-
 import streamlit as st
 import pandas as pd
 import asyncio
