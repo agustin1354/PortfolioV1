@@ -19,7 +19,7 @@ def load_data():
         return df
     except Exception as e:
         st.error(f"Error cargando bonos.json: {e}")
-        return pd.DataFrame(columns=["Bono", "Precio"])
+        return pd.DataFrame(columns=["bono", "precio"])
 
 @st.cache_data
 def save_data(df):
@@ -45,14 +45,14 @@ st.dataframe(bonos_df)
 st.sidebar.header("Agregar una posición")
 
 if not bonos_df.empty:
-    bono_seleccionado = st.sidebar.selectbox("Seleccionar Bono", bonos_df["Bono"].unique())
+    bono_seleccionado = st.sidebar.selectbox("Seleccionar Bono", bonos_df["bono"].unique())
     cantidad = st.sidebar.number_input("Cantidad de títulos", min_value=0, value=0, step=1)
     
     # Botón para agregar al portfolio
     if st.sidebar.button("Agregar al portfolio"):
         if "portfolio" not in st.session_state:
             st.session_state["portfolio"] = []
-        precio_bono = bonos_df.loc[bonos_df["Bono"] == bono_seleccionado, "Precio"].values[0]
+        precio_bono = bonos_df.loc[bonos_df["Bono"] == bono_seleccionado, "precio"].values[0]
         st.session_state["portfolio"].append({
             "Bono": bono_seleccionado,
             "Cantidad": cantidad,
