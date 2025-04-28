@@ -20,6 +20,8 @@ def load_data():
 st.title("📈 Portfolio Tracker de Bonos")
 
 bonos_df = load_data()
+st.write(bonos_df)
+
 
 # Inicializar session_state
 if "portfolio" not in st.session_state:
