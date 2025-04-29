@@ -105,13 +105,12 @@ if st.sidebar.button("Agregar al portfolio"):
                 "Precio actual": precio,
                 "Valor de la posición": cantidad * precio
             })
-
-            # Reset
-    st.session_state.update({
-        "selected_activo": None,
-        "cantidad_input": 0
-       })
-            
+# Reset
+st.session_state.update({
+    "selected_activo": None,
+    "cantidad_input": 0
+})
+               
     st.experimental_rerun()
 
 else:
