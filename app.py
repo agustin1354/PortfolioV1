@@ -107,10 +107,10 @@ if st.sidebar.button("Agregar al portfolio"):
             })
 
             # Reset
-                st.session_state.update({
-                "selected_activo": None,
-                "cantidad_input": 0
-                })
+    st.session_state.update({
+        "selected_activo": None,
+        "cantidad_input": 0
+       })
             
             st.experimental_rerun()
 
