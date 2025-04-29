@@ -114,8 +114,8 @@ if st.sidebar.button("Agregar al portfolio"):
             
     st.experimental_rerun()
 
-        else:
-            st.warning("Seleccioná un activo y una cantidad mayor a 0.")
+else:
+     st.warning("Seleccioná un activo y una cantidad mayor a 0.")
 
 # Sidebar opciones generales
 st.sidebar.header("Opciones del Portfolio")
