@@ -69,8 +69,7 @@ if not bonos_df.empty:
     selected_bono = st.sidebar.selectbox(
         "Seleccionar Bono", 
         [""] + list(bonos_df["bono"].unique()), 
-        index=0,
-        key="selected_bono"
+             key="selected_bono"
     )
 
     cantidad = st.sidebar.number_input(
