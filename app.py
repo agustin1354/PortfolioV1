@@ -103,7 +103,7 @@ if not bonos_df.empty:
                 })
 
             # Resetear los campos
-            st.session_state["selected_bono"] = None
+            st.session_state["selected_bono"] = ""
             st.session_state["cantidad_input"] = 0
 
             st.success(f"{cantidad} unidades de {selected_bono} agregadas al portfolio.")
