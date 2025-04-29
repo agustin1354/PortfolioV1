@@ -148,14 +148,14 @@ if st.session_state["portfolio"]:
             if st.button(f"Actualizar {item['Bono']}", key=f"update_{idx}"):
                 st.session_state["portfolio"][idx]["Cantidad"] = nueva_cantidad
                 st.session_state["portfolio"][idx]["Valor de la posición"] = nueva_cantidad * item["Precio actual"]
-                st.experimental_rerun()  # <- fuerza el redibujo para que se actualice el título
+                st.rerun()  # <- fuerza el redibujo para que se actualice el título
 
 
             with col2:
                 if st.button(f"🗑️ Borrar {item['Bono']}", key=f"delete_{idx}"):
                     st.session_state["portfolio"].pop(idx)
                     st.success(f"Bono {item['Bono']} eliminado del portfolio.")
-                    st.experimental_rerun()
+                    st.rerun()
 
             with col3:
                 st.metric(label="Valor actual", value=f"${item['Valor de la posición']:,.2f}")
