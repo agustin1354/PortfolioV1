@@ -143,10 +143,13 @@ if st.session_state["portfolio"]:
                     step=1,
                     key=f"editar_{idx}"
                 )
-                if st.button(f"Actualizar {item['Bono']}", key=f"update_{idx}"):
-                    st.session_state["portfolio"][idx]["Cantidad"] = nueva_cantidad
-                    st.session_state["portfolio"][idx]["Valor de la posición"] = nueva_cantidad * item["Precio actual"]
-                    st.success(f"Cantidad de {item['Bono']} actualizada.")
+
+
+            if st.button(f"Actualizar {item['Bono']}", key=f"update_{idx}"):
+    st.session_state["portfolio"][idx]["Cantidad"] = nueva_cantidad
+    st.session_state["portfolio"][idx]["Valor de la posición"] = nueva_cantidad * item["Precio actual"]
+    st.experimental_rerun()  # <- fuerza el redibujo para que se actualice el título
+
 
             with col2:
                 if st.button(f"🗑️ Borrar {item['Bono']}", key=f"delete_{idx}"):
