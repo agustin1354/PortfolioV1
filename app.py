@@ -83,7 +83,6 @@ cantidad = st.sidebar.number_input(
     step=1,
     key="cantidad_input"
 )
-
 if st.sidebar.button("Agregar al portfolio"):
     if selected_activo and cantidad > 0:
         precio = activos_df.loc[activos_df["nombre"] == selected_activo, "precio"].values[0]
@@ -105,14 +104,11 @@ if st.sidebar.button("Agregar al portfolio"):
                 "Precio actual": precio,
                 "Valor de la posición": cantidad * precio
             })
-# Reset
-st.session_state.update({
-    "selected_activo": None,
-    "cantidad_input": 0
-})
-               
-    st.experimental_rerun()
 
+        # Reset inputs (esto es lo que estaba mal indentado)
+        st.session_state["selected_activo"] = ""
+        st.session_state["cantidad_input"] = 0
+        st.experimental_rerun()
 else:
      st.warning("Seleccioná un activo y una cantidad mayor a 0.")
 
