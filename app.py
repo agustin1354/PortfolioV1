@@ -52,15 +52,21 @@ if "portfolio" not in st.session_state:
 # Sidebar para agregar posiciones
 st.sidebar.header("Agregar una posición")
 
-tipo_activo = st.sidebar.selectbox("Tipo de activo", ["BONOS", "CEDEARS"], key="tipo_activo")
+if "tipo_activo" not in st.session_state:
+    st.session_state["tipo_activo"] = ""
+
+tipo_activo = st.sidebar.selectbox("Tipo de activo", [""] + ["BONOS", "CEDEARS"], key="tipo_activo")
+if not tipo_activo:
+    st.stop()
 
 # Detectar cambio de tipo de activo y resetear selección anterior y cantidad
 if "last_tipo_activo" not in st.session_state:
     st.session_state["last_tipo_activo"] = tipo_activo
-elif st.session_state["last_tipo_activo"] != tipo_activo:
-    st.session_state["cantidad_input"] = 0
-    st.session_state["last_tipo_activo"] = tipo_activo
-    st.rerun()
+elif st.session_state["selected_activo"] = ""
+st.session_state["cantidad_input"] = 0
+st.session_state["tipo_activo"] = ""
+st.rerun()
+
 
 activos_df = load_data(tipo_activo)
 
@@ -141,12 +147,18 @@ if st.session_state["portfolio"]:
                 if st.button(f"Actualizar {item['Activo']}", key=f"update_{idx}"):
                     item["Cantidad"] = nueva_cantidad
                     item["Valor de la posición"] = nueva_cantidad * item["Precio actual"]
-                    st.experimental_rerun()
-
+                    st.session_state["selected_activo"] = ""
+                    st.session_state["cantidad_input"] = 0
+                    st.session_state["tipo_activo"] = ""
+                    st.rerun()
+                    
             with col2:
                 if st.button(f"🗑️ Borrar {item['Activo']}", key=f"delete_{idx}"):
                     st.session_state["portfolio"].pop(idx)
-                    st.experimental_rerun()
+                    st.session_state["selected_activo"] = ""
+                    st.session_state["cantidad_input"] = 0
+                    st.session_state["tipo_activo"] = ""
+                    st.rerun()
 
             with col3:
                 st.metric(label="Valor actual", value=f"${item['Valor de la posición']:,.2f}")
