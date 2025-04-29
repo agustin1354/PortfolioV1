@@ -50,6 +50,15 @@ st.title("💰 Portfolio Tracker")
 if "portfolio" not in st.session_state:
     st.session_state["portfolio"] = load_portfolio()
 
+# Reiniciar inputs si fue solicitado por alguna acción
+if "reset_sidebar" in st.session_state and st.session_state["reset_sidebar"]:
+    st.session_state["tipo_activo"] = ""
+    st.session_state["selected_activo"] = ""
+    st.session_state["cantidad_input"] = 0
+    st.session_state["reset_sidebar"] = False
+    st.experimental_rerun()
+
+
 # Inicializar valores del formulario si no existen
 if "tipo_activo" not in st.session_state:
     st.session_state["tipo_activo"] = ""
@@ -106,10 +115,9 @@ if st.sidebar.button("Agregar al portfolio"):
             })
 
         # Resetear valores del sidebar
-        st.session_state["selected_activo"] = ""
-        st.session_state["cantidad_input"] = 0
-        st.session_state["tipo_activo"] = ""
-        st.rerun()
+        st.session_state["reset_sidebar"] = True
+        st.experimental_rerun()
+        
     else:
         st.warning("Seleccioná un activo y una cantidad mayor a 0.")
 
