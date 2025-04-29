@@ -54,6 +54,13 @@ st.sidebar.header("Agregar una posición")
 
 tipo_activo = st.sidebar.selectbox("Tipo de activo", ["BONOS", "CEDEARS"], key="tipo_activo")
 
+# Detectar cambio de tipo de activo y resetear selección anterior
+if "last_tipo_activo" not in st.session_state:
+    st.session_state["last_tipo_activo"] = tipo_activo
+elif st.session_state["last_tipo_activo"] != tipo_activo:
+    st.session_state["selected_activo"] = None
+    st.session_state["last_tipo_activo"] = tipo_activo
+
 activos_df = load_data(tipo_activo)
 
 # Inicializar valores temporales si no existen
