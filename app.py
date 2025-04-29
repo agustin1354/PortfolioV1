@@ -41,6 +41,11 @@ def load_portfolio():
             return json.load(f)
     return []
 
+def reset_sidebar():
+    """Reset sidebar inputs and rerun the app."""
+    st.session_state["reset_sidebar"] = False
+    st.experimental_rerun()
+
 # ----------------------
 # Inicialización
 # ----------------------
@@ -49,8 +54,7 @@ st.title("💰 Portfolio Tracker")
 
 # Ejecutar rerun si se activó el reset del sidebar
 if st.session_state.get("reset_sidebar", False):
-    st.session_state["reset_sidebar"] = False
-    st.experimental_rerun()
+    reset_sidebar()
 
 # Inicializar session_state si no existe
 if "portfolio" not in st.session_state:
@@ -69,11 +73,15 @@ tipo_activo = st.sidebar.selectbox("Tipo de activo", [""] + ["BONOS", "CEDEARS"]
 
 if tipo_activo:
     activos_df = load_data(tipo_activo)
-    selected_activo = st.sidebar.selectbox(
-        f"Seleccionar {tipo_activo}",
-        [""] + list(activos_df["nombre"].unique()),
-        key="selected_activo"
-    )
+    if not activos_df.empty:
+        selected_activo = st.sidebar.selectbox(
+            f"Seleccionar {tipo_activo}",
+            [""] + list(activos_df["nombre"].unique()),
+            key="selected_activo"
+        )
+    else:
+        st.sidebar.warning(f"No se encontraron activos para {tipo_activo}.")
+        selected_activo = ""
 else:
     activos_df = pd.DataFrame()
     selected_activo = ""
@@ -88,24 +96,27 @@ cantidad = st.sidebar.number_input(
 
 if st.sidebar.button("Agregar al portfolio"):
     if tipo_activo and selected_activo and cantidad > 0:
-        precio = activos_df.loc[activos_df["nombre"] == selected_activo, "precio"].values[0]
-        encontrado = False
-        for item in st.session_state["portfolio"]:
-            if item["Activo"] == selected_activo and item["Tipo"] == tipo_activo:
-                item["Cantidad"] += cantidad
-                item["Valor de la posición"] = item["Cantidad"] * item["Precio actual"]
-                encontrado = True
-                break
-        if not encontrado:
-            st.session_state["portfolio"].append({
-                "Activo": selected_activo,
-                "Tipo": tipo_activo,
-                "Cantidad": cantidad,
-                "Precio actual": precio,
-                "Valor de la posición": cantidad * precio
-            })
-        # Resetear inputs
-        st.session_state["reset_sidebar"] = True
+        try:
+            precio = activos_df.loc[activos_df["nombre"] == selected_activo, "precio"].values[0]
+            encontrado = False
+            for item in st.session_state["portfolio"]:
+                if item["Activo"] == selected_activo and item["Tipo"] == tipo_activo:
+                    item["Cantidad"] += cantidad
+                    item["Valor de la posición"] = item["Cantidad"] * item["Precio actual"]
+                    encontrado = True
+                    break
+            if not encontrado:
+                st.session_state["portfolio"].append({
+                    "Activo": selected_activo,
+                    "Tipo": tipo_activo,
+                    "Cantidad": cantidad,
+                    "Precio actual": precio,
+                    "Valor de la posición": cantidad * precio
+                })
+            # Resetear inputs
+            reset_sidebar()
+        except IndexError:
+            st.error("Error al obtener el precio del activo seleccionado.")
     else:
         st.warning("Seleccioná un tipo de activo, un activo y una cantidad mayor a 0.")
 
@@ -116,7 +127,7 @@ if st.sidebar.button("🔄 Reiniciar Portfolio"):
     if os.path.exists("portfolio.json"):
         os.remove("portfolio.json")
     st.success("Portfolio reiniciado.")
-    st.session_state["reset_sidebar"] = True
+    reset_sidebar()
 
 if st.sidebar.button("💾 Guardar Portfolio"):
     save_portfolio(st.session_state["portfolio"])
@@ -145,12 +156,12 @@ if st.session_state["portfolio"]:
                 if st.button(f"Actualizar {item['Activo']}", key=f"update_{idx}"):
                     item["Cantidad"] = nueva_cantidad
                     item["Valor de la posición"] = nueva_cantidad * item["Precio actual"]
-                    st.session_state["reset_sidebar"] = True
+                    reset_sidebar()
 
             with col2:
                 if st.button(f"🗑️ Borrar {item['Activo']}", key=f"delete_{idx}"):
                     st.session_state["portfolio"].pop(idx)
-                    st.session_state["reset_sidebar"] = True
+                    reset_sidebar()
 
             with col3:
                 st.metric(label="Valor actual", value=f"${item['Valor de la posición']:,.2f}")
@@ -161,13 +172,11 @@ if st.session_state["portfolio"]:
 
     # Gráfico de distribución
     portfolio_df = pd.DataFrame(st.session_state["portfolio"])
-    fig, ax = plt.subplots()
-    portfolio_df.set_index('Activo')["Valor de la posición"].plot.pie(autopct='%1.1f%%', ax=ax, figsize=(6, 6))
-    ax.set_ylabel("")
-    st.pyplot(fig)
+    if not portfolio_df.empty:
+        fig, ax = plt.subplots()
+        portfolio_df.set_index('Activo')["Valor de la posición"].plot.pie(autopct='%1.1f%%', ax=ax, figsize=(6, 6))
+        ax.set_ylabel("")
+        st.pyplot(fig)
 
 else:
     st.info("Todavía no agregaste activos al portfolio.")
-
-
-
