@@ -45,6 +45,7 @@ def load_portfolio():
 # ----------------------
 
 st.title("💰 Portfolio Tracker")
+st.session_state.clear()
 
 if "portfolio" not in st.session_state:
     st.session_state["portfolio"] = load_portfolio()
