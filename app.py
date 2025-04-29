@@ -62,7 +62,7 @@ st.sidebar.header("Agregar una posición")
 if not bonos_df.empty:
     # Inicializar valores temporales si no existen
     if "selected_bono" not in st.session_state:
-        st.session_state["selected_bono"] = None
+        st.session_state["selected_bono"] = ""
     if "cantidad_input" not in st.session_state:
         st.session_state["cantidad_input"] = 0
 
