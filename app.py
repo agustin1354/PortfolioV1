@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import json
 import os
+import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="Portfolio Tracker de Bonos", page_icon="💵", layout="wide")
 
@@ -15,7 +16,7 @@ def load_data():
         with open("bonos.json", "r") as f:
             data = json.load(f)
         if isinstance(data, dict):
-            data = [data]  # por si es dict en lugar de lista
+            data = [data]
         df = pd.DataFrame(data)
         return df
     except Exception as e:
@@ -56,58 +57,59 @@ bonos_df = load_data()
 if "portfolio" not in st.session_state:
     st.session_state["portfolio"] = load_portfolio()
 
+# Inicializar estado de inputs
+if "selected_bono" not in st.session_state:
+    st.session_state["selected_bono"] = ""
+if "cantidad_input" not in st.session_state:
+    st.session_state["cantidad_input"] = 0
+
+# Función para agregar un bono al portfolio
+def agregar_bono():
+    selected_bono = st.session_state.get("selected_bono", "")
+    cantidad = st.session_state.get("cantidad_input", 0)
+
+    if selected_bono and cantidad > 0:
+        precio_bono = bonos_df.loc[bonos_df["bono"] == selected_bono, "precio"].values[0]
+
+        for item in st.session_state["portfolio"]:
+            if item["Bono"] == selected_bono:
+                item["Cantidad"] += cantidad
+                item["Valor de la posición"] = item["Cantidad"] * item["Precio actual"]
+                break
+        else:
+            st.session_state["portfolio"].append({
+                "Bono": selected_bono,
+                "Cantidad": cantidad,
+                "Precio actual": precio_bono,
+                "Valor de la posición": cantidad * precio_bono
+            })
+
+        # Resetear campos de entrada visualmente
+        st.session_state["selected_bono"] = ""
+        st.session_state["cantidad_input"] = 0
+        st.success(f"{cantidad} unidades de {selected_bono} agregadas al portfolio.")
+    else:
+        st.warning("Por favor selecciona un bono y una cantidad mayor a 0.")
+
 # Sidebar para agregar posiciones
 st.sidebar.header("Agregar una posición")
 
 if not bonos_df.empty:
-    # Inicializar valores temporales si no existen
-    if "selected_bono" not in st.session_state:
-        st.session_state["selected_bono"] = ""
-    if "cantidad_input" not in st.session_state:
-        st.session_state["cantidad_input"] = 0
-
-    selected_bono = st.sidebar.selectbox(
-        "Seleccionar Bono", 
-        [""] + list(bonos_df["bono"].unique()), 
-             key="selected_bono"
+    st.sidebar.selectbox(
+        "Seleccionar Bono",
+        [""] + list(bonos_df["bono"].unique()),
+        key="selected_bono"
     )
 
-    cantidad = st.sidebar.number_input(
-        "Cantidad de títulos", 
-        min_value=0, 
-        value=0, 
+    st.sidebar.number_input(
+        "Cantidad de títulos",
+        min_value=0,
+        value=0,
         step=1,
         key="cantidad_input"
     )
-    
-    if st.sidebar.button("Agregar al portfolio"):
-        if selected_bono and cantidad > 0:
-            precio_bono = bonos_df.loc[bonos_df["bono"] == selected_bono, "precio"].values[0]
-            
-            # Revisar si el bono ya está en el portfolio
-            encontrado = False
-            for item in st.session_state["portfolio"]:
-                if item["Bono"] == selected_bono:
-                    item["Cantidad"] += cantidad
-                    item["Valor de la posición"] = item["Cantidad"] * item["Precio actual"]
-                    encontrado = True
-                    break
-            
-            if not encontrado:
-                st.session_state["portfolio"].append({
-                    "Bono": selected_bono,
-                    "Cantidad": cantidad,
-                    "Precio actual": precio_bono,
-                    "Valor de la posición": cantidad * precio_bono
-                })
 
-            # Resetear los campos
-            st.session_state["selected_bono"] = ""
-            st.session_state["cantidad_input"] = 0
-
-            st.success(f"{cantidad} unidades de {selected_bono} agregadas al portfolio.")
-        else:
-            st.warning("Por favor selecciona un bono y una cantidad mayor a 0.")
+    st.sidebar.button("Agregar al portfolio", on_click=agregar_bono)
 else:
     st.sidebar.warning("No hay bonos cargados.")
 
@@ -129,17 +131,16 @@ st.subheader("💼 Mi Portfolio")
 if st.session_state["portfolio"]:
     total_valor = sum(item["Valor de la posición"] for item in st.session_state["portfolio"])
 
-    # Mostrar cada bono en una tarjeta cerrada
     for idx, item in enumerate(st.session_state["portfolio"]):
         with st.expander(f"{item['Bono']} - {item['Cantidad']} títulos - ${item['Valor de la posición']:,.2f}", expanded=False):
             col1, col2, col3 = st.columns([2, 2, 1])
 
             with col1:
                 nueva_cantidad = st.number_input(
-                    f"Editar cantidad ({item['Bono']})", 
-                    min_value=0, 
-                    value=item['Cantidad'], 
-                    step=1, 
+                    f"Editar cantidad ({item['Bono']})",
+                    min_value=0,
+                    value=item['Cantidad'],
+                    step=1,
                     key=f"editar_{idx}"
                 )
                 if st.button(f"Actualizar {item['Bono']}", key=f"update_{idx}"):
@@ -156,24 +157,16 @@ if st.session_state["portfolio"]:
             with col3:
                 st.metric(label="Valor actual", value=f"${item['Valor de la posición']:,.2f}")
 
-    # Total del Portfolio
+    # Resumen
     st.subheader("📈 Resumen del Portfolio")
     st.metric("Valor Total del Portfolio", f"${total_valor:,.2f}")
 
-    # Gráfico de torta
     st.subheader("📊 Distribución del Portfolio")
-    import matplotlib.pyplot as plt
+    portfolio_df = pd.DataFrame(st.session_state["portfolio"])
+    fig, ax = plt.subplots()
+    portfolio_df.set_index('Bono')["Valor de la posición"].plot.pie(autopct='%1.1f%%', ax=ax, figsize=(6, 6))
+    ax.set_ylabel("")
+    st.pyplot(fig)
 
-    if st.session_state["portfolio"]:
-        portfolio_df = pd.DataFrame(st.session_state["portfolio"])
-        fig, ax = plt.subplots()
-        portfolio_df.set_index('Bono')["Valor de la posición"].plot.pie(autopct='%1.1f%%', ax=ax, figsize=(6, 6))
-        ax.set_ylabel("")
-        st.pyplot(fig)
 else:
     st.info("Todavía no agregaste bonos al portfolio.")
-
-# ----------------------
-# Fin del archivo
-# ----------------------
-
