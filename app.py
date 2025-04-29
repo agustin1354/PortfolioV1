@@ -105,9 +105,6 @@ if st.sidebar.button("Agregar al portfolio"):
                 "Valor de la posición": cantidad * precio
             })
 
-        # Reset inputs (esto es lo que estaba mal indentado)
-     
-        st.session_state["cantidad_input"] = ""
         st.experimental_rerun()
 else:
      st.warning("Seleccioná un activo y una cantidad mayor a 0.")
