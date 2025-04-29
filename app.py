@@ -104,9 +104,7 @@ if st.sidebar.button("Agregar al portfolio"):
                 "Precio actual": precio,
                 "Valor de la posición": cantidad * precio
             })
-
-        st.experimental_rerun()
-else:
+    else:
      st.warning("Seleccioná un activo y una cantidad mayor a 0.")
 
 # Sidebar opciones generales
