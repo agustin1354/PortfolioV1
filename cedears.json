@@ -1,0 +1,1986 @@
+[
+    {
+        "activo": "ARKK ETF",
+        "precio": "6130,00"
+    },
+    {
+        "activo": "ARKKD ETF",
+        "precio": "5,17"
+    },
+    {
+        "activo": "DIA ETF",
+        "precio": "24100,00"
+    },
+    {
+        "activo": "DIAC ETF",
+        "precio": "19,85"
+    },
+    {
+        "activo": "DIAD ETF",
+        "precio": "20,50"
+    },
+    {
+        "activo": "EEM ETF",
+        "precio": "10450,00"
+    },
+    {
+        "activo": "EEMD ETF",
+        "precio": "8,89"
+    },
+    {
+        "activo": "EWZ ETF",
+        "precio": "16275,00"
+    },
+    {
+        "activo": "EWZC ETF",
+        "precio": "13,30"
+    },
+    {
+        "activo": "EWZD ETF",
+        "precio": "13,80"
+    },
+    {
+        "activo": "IWM ETF",
+        "precio": "23225,00"
+    },
+    {
+        "activo": "IWMD ETF",
+        "precio": "19,45"
+    },
+    {
+        "activo": "QQQ ETF",
+        "precio": "28225,00"
+    },
+    {
+        "activo": "QQQC ETF",
+        "precio": "24,95"
+    },
+    {
+        "activo": "QQQD ETF",
+        "precio": "24,05"
+    },
+    {
+        "activo": "SPY ETF",
+        "precio": "32875,00"
+    },
+    {
+        "activo": "SPYC ETF",
+        "precio": "28,50"
+    },
+    {
+        "activo": "SPYD ETF",
+        "precio": "27,95"
+    },
+    {
+        "activo": "XLE ETF",
+        "precio": "49075,00"
+    },
+    {
+        "activo": "XLED ETF",
+        "precio": "41,80"
+    },
+    {
+        "activo": "XLF ETF",
+        "precio": "28750,00"
+    },
+    {
+        "activo": "XLFD ETF",
+        "precio": "24,50"
+    },
+    {
+        "activo": "AAL",
+        "precio": "5770,00"
+    },
+    {
+        "activo": "AALD",
+        "precio": "5,05"
+    },
+    {
+        "activo": "AAP",
+        "precio": "2745,00"
+    },
+    {
+        "activo": "AAPL",
+        "precio": "12650,00"
+    },
+    {
+        "activo": "AAPLC",
+        "precio": "10,70"
+    },
+    {
+        "activo": "AAPLD",
+        "precio": "10,75"
+    },
+    {
+        "activo": "ABBV",
+        "precio": "23150,00"
+    },
+    {
+        "activo": "ABBVC",
+        "precio": "11,00"
+    },
+    {
+        "activo": "ABBVD",
+        "precio": "19,50"
+    },
+    {
+        "activo": "ABEV",
+        "precio": "9100,00"
+    },
+    {
+        "activo": "ABEVD",
+        "precio": "7,65"
+    },
+    {
+        "activo": "ABNB",
+        "precio": "9980,00"
+    },
+    {
+        "activo": "ABNBD",
+        "precio": "8,55"
+    },
+    {
+        "activo": "ABT",
+        "precio": "38750,00"
+    },
+    {
+        "activo": "ABTD",
+        "precio": "32,00"
+    },
+    {
+        "activo": "ACN",
+        "precio": "4750,00"
+    },
+    {
+        "activo": "ACND",
+        "precio": "4,10"
+    },
+    {
+        "activo": "ADBE",
+        "precio": "10100,00"
+    },
+    {
+        "activo": "ADBED",
+        "precio": "8,53"
+    },
+    {
+        "activo": "ADGO",
+        "precio": "11025,00"
+    },
+    {
+        "activo": "ADI",
+        "precio": "15275,00"
+    },
+    {
+        "activo": "ADP",
+        "precio": "57850,00"
+    },
+    {
+        "activo": "ADS",
+        "precio": "3980,00"
+    },
+    {
+        "activo": "AEG",
+        "precio": "7730,00"
+    },
+    {
+        "activo": "AEM",
+        "precio": "23500,00"
+    },
+    {
+        "activo": "AIG",
+        "precio": "19500,00"
+    },
+    {
+        "activo": "AKO.B",
+        "precio": "30700,00"
+    },
+    {
+        "activo": "AMAT",
+        "precio": "35950,00"
+    },
+    {
+        "activo": "AMD",
+        "precio": "11475,00"
+    },
+    {
+        "activo": "AMDD",
+        "precio": "9,97"
+    },
+    {
+        "activo": "AMGN",
+        "precio": "11225,00"
+    },
+    {
+        "activo": "AMX",
+        "precio": "20425,00"
+    },
+    {
+        "activo": "AMXD",
+        "precio": "17,20"
+    },
+    {
+        "activo": "AMZN",
+        "precio": "1540,00"
+    },
+    {
+        "activo": "AMZNC",
+        "precio": "1,31"
+    },
+    {
+        "activo": "AMZND",
+        "precio": "1,32"
+    },
+    {
+        "activo": "ANF",
+        "precio": "84400,00"
+    },
+    {
+        "activo": "ANFD",
+        "precio": "70,00"
+    },
+    {
+        "activo": "ARCO",
+        "precio": "18375,00"
+    },
+    {
+        "activo": "ARM",
+        "precio": "4785,00"
+    },
+    {
+        "activo": "ASR",
+        "precio": "18725,00"
+    },
+    {
+        "activo": "AVGO",
+        "precio": "5880,00"
+    },
+    {
+        "activo": "AVGOD",
+        "precio": "5,06"
+    },
+    {
+        "activo": "AVY",
+        "precio": "11350,00"
+    },
+    {
+        "activo": "AXP",
+        "precio": "21025,00"
+    },
+    {
+        "activo": "AXPD",
+        "precio": "18,10"
+    },
+    {
+        "activo": "AZN",
+        "precio": "42500,00"
+    },
+    {
+        "activo": "AZND",
+        "precio": "34,75"
+    },
+    {
+        "activo": "BA",
+        "precio": "9070,00"
+    },
+    {
+        "activo": "BA.C",
+        "precio": "11800,00"
+    },
+    {
+        "activo": "BA.CD",
+        "precio": "10,15"
+    },
+    {
+        "activo": "BABA",
+        "precio": "15825,00"
+    },
+    {
+        "activo": "BABAC",
+        "precio": "12,50"
+    },
+    {
+        "activo": "BABAD",
+        "precio": "13,40"
+    },
+    {
+        "activo": "BAD",
+        "precio": "7,74"
+    },
+    {
+        "activo": "BAK",
+        "precio": "2395,00"
+    },
+    {
+        "activo": "BB",
+        "precio": "1335,00"
+    },
+    {
+        "activo": "BBAS3",
+        "precio": "2980,00"
+    },
+    {
+        "activo": "BBD",
+        "precio": "2895,00"
+    },
+    {
+        "activo": "BBDC",
+        "precio": "4,52"
+    },
+    {
+        "activo": "BBDD",
+        "precio": "2,44"
+    },
+    {
+        "activo": "BBV",
+        "precio": "16775,00"
+    },
+    {
+        "activo": "BCS",
+        "precio": "19175,00"
+    },
+    {
+        "activo": "BHP",
+        "precio": "29200,00"
+    },
+    {
+        "activo": "BIDU",
+        "precio": "9720,00"
+    },
+    {
+        "activo": "BIDUD",
+        "precio": "8,33"
+    },
+    {
+        "activo": "BIIB",
+        "precio": "10800,00"
+    },
+    {
+        "activo": "BIOX",
+        "precio": "4985,00"
+    },
+    {
+        "activo": "BIOXD",
+        "precio": "4,17"
+    },
+    {
+        "activo": "BITF",
+        "precio": "6150,00"
+    },
+    {
+        "activo": "BITFD",
+        "precio": "5,09"
+    },
+    {
+        "activo": "BK",
+        "precio": "47125,00"
+    },
+    {
+        "activo": "BKNG",
+        "precio": "8490,00"
+    },
+    {
+        "activo": "BKR",
+        "precio": "6220,00"
+    },
+    {
+        "activo": "BMY",
+        "precio": "19475,00"
+    },
+    {
+        "activo": "BMYD",
+        "precio": "20,50"
+    },
+    {
+        "activo": "BNG",
+        "precio": "19450,00"
+    },
+    {
+        "activo": "BP",
+        "precio": "6830,00"
+    },
+    {
+        "activo": "BPD",
+        "precio": "5,96"
+    },
+    {
+        "activo": "BRFS",
+        "precio": "14250,00"
+    },
+    {
+        "activo": "BRKB",
+        "precio": "28750,00"
+    },
+    {
+        "activo": "BRKBC",
+        "precio": "24,90"
+    },
+    {
+        "activo": "BRKBD",
+        "precio": "24,45"
+    },
+    {
+        "activo": "BSBR",
+        "precio": "6150,00"
+    },
+    {
+        "activo": "C",
+        "precio": "27300,00"
+    },
+    {
+        "activo": "C.D",
+        "precio": "23,45"
+    },
+    {
+        "activo": "CAAP",
+        "precio": "95800,00"
+    },
+    {
+        "activo": "CAAPD",
+        "precio": "67,00"
+    },
+    {
+        "activo": "CAH",
+        "precio": "55500,00"
+    },
+    {
+        "activo": "CAHD",
+        "precio": "43,50"
+    },
+    {
+        "activo": "CAR",
+        "precio": "4350,00"
+    },
+    {
+        "activo": "CAT",
+        "precio": "18200,00"
+    },
+    {
+        "activo": "CATD",
+        "precio": "15,60"
+    },
+    {
+        "activo": "CCL",
+        "precio": "7540,00"
+    },
+    {
+        "activo": "CCLD",
+        "precio": "5,81"
+    },
+    {
+        "activo": "CDE",
+        "precio": "6780,00"
+    },
+    {
+        "activo": "CL",
+        "precio": "36250,00"
+    },
+    {
+        "activo": "CLD",
+        "precio": "31,50"
+    },
+    {
+        "activo": "COIN",
+        "precio": "9090,00"
+    },
+    {
+        "activo": "COIND",
+        "precio": "7,69"
+    },
+    {
+        "activo": "COST",
+        "precio": "24650,00"
+    },
+    {
+        "activo": "COSTD",
+        "precio": "20,45"
+    },
+    {
+        "activo": "CRM",
+        "precio": "17575,00"
+    },
+    {
+        "activo": "CRMD",
+        "precio": "14,80"
+    },
+    {
+        "activo": "CSCO",
+        "precio": "13600,00"
+    },
+    {
+        "activo": "CSCOD",
+        "precio": "11,50"
+    },
+    {
+        "activo": "CVS",
+        "precio": "5140,00"
+    },
+    {
+        "activo": "CVSD",
+        "precio": "4,29"
+    },
+    {
+        "activo": "CVX",
+        "precio": "10350,00"
+    },
+    {
+        "activo": "CVXD",
+        "precio": "8,85"
+    },
+    {
+        "activo": "CX",
+        "precio": "7400,00"
+    },
+    {
+        "activo": "DAL",
+        "precio": "6240,00"
+    },
+    {
+        "activo": "DALD",
+        "precio": "9,17"
+    },
+    {
+        "activo": "DD",
+        "precio": "15725,00"
+    },
+    {
+        "activo": "DE",
+        "precio": "13725,00"
+    },
+    {
+        "activo": "DED",
+        "precio": "11,35"
+    },
+    {
+        "activo": "DEO",
+        "precio": "22175,00"
+    },
+    {
+        "activo": "DESP",
+        "precio": "23375,00"
+    },
+    {
+        "activo": "DESPD",
+        "precio": "19,75"
+    },
+    {
+        "activo": "DHR",
+        "precio": "4295,00"
+    },
+    {
+        "activo": "DISN",
+        "precio": "9040,00"
+    },
+    {
+        "activo": "DISND",
+        "precio": "7,56"
+    },
+    {
+        "activo": "DOCU",
+        "precio": "4430,00"
+    },
+    {
+        "activo": "DOCUD",
+        "precio": "3,80"
+    },
+    {
+        "activo": "DOW",
+        "precio": "6030,00"
+    },
+    {
+        "activo": "DOWD",
+        "precio": "5,07"
+    },
+    {
+        "activo": "E",
+        "precio": "8620,00"
+    },
+    {
+        "activo": "EA",
+        "precio": "12525,00"
+    },
+    {
+        "activo": "EAD",
+        "precio": "10,50"
+    },
+    {
+        "activo": "EBAY",
+        "precio": "39850,00"
+    },
+    {
+        "activo": "EBAYD",
+        "precio": "33,70"
+    },
+    {
+        "activo": "EBR",
+        "precio": "36550,00"
+    },
+    {
+        "activo": "EFX",
+        "precio": "18950,00"
+    },
+    {
+        "activo": "EFXD",
+        "precio": "13,40"
+    },
+    {
+        "activo": "ELP",
+        "precio": "29150,00"
+    },
+    {
+        "activo": "EQNR",
+        "precio": "4500,00"
+    },
+    {
+        "activo": "ERIC",
+        "precio": "4845,00"
+    },
+    {
+        "activo": "ERJ",
+        "precio": "54700,00"
+    },
+    {
+        "activo": "ERJD",
+        "precio": "44,80"
+    },
+    {
+        "activo": "ETHA",
+        "precio": "3295,00"
+    },
+    {
+        "activo": "ETHAD",
+        "precio": "2,80"
+    },
+    {
+        "activo": "ETSY",
+        "precio": "3400,00"
+    },
+    {
+        "activo": "ETSYD",
+        "precio": "2,61"
+    },
+    {
+        "activo": "F",
+        "precio": "12000,00"
+    },
+    {
+        "activo": "FCX",
+        "precio": "14875,00"
+    },
+    {
+        "activo": "FCXD",
+        "precio": "13,90"
+    },
+    {
+        "activo": "FD",
+        "precio": "10,05"
+    },
+    {
+        "activo": "FDX",
+        "precio": "25250,00"
+    },
+    {
+        "activo": "FDXD",
+        "precio": "21,70"
+    },
+    {
+        "activo": "FMX",
+        "precio": "21175,00"
+    },
+    {
+        "activo": "FMXD",
+        "precio": "16,40"
+    },
+    {
+        "activo": "FSLR",
+        "precio": "9340,00"
+    },
+    {
+        "activo": "FXI",
+        "precio": "8110,00"
+    },
+    {
+        "activo": "FXID",
+        "precio": "6,89"
+    },
+    {
+        "activo": "GE",
+        "precio": "30200,00"
+    },
+    {
+        "activo": "GEC",
+        "precio": "13,60"
+    },
+    {
+        "activo": "GED",
+        "precio": "25,75"
+    },
+    {
+        "activo": "GFI",
+        "precio": "26425,00"
+    },
+    {
+        "activo": "GGB",
+        "precio": "13000,00"
+    },
+    {
+        "activo": "GILD",
+        "precio": "31700,00"
+    },
+    {
+        "activo": "GILDC",
+        "precio": "15,50"
+    },
+    {
+        "activo": "GILDD",
+        "precio": "27,00"
+    },
+    {
+        "activo": "GLD",
+        "precio": "7280,00"
+    },
+    {
+        "activo": "GLDD",
+        "precio": "6,17"
+    },
+    {
+        "activo": "GLOB",
+        "precio": "7990,00"
+    },
+    {
+        "activo": "GLOBD",
+        "precio": "6,84"
+    },
+    {
+        "activo": "GLW",
+        "precio": "13200,00"
+    },
+    {
+        "activo": "GM",
+        "precio": "9170,00"
+    },
+    {
+        "activo": "GMD",
+        "precio": "7,52"
+    },
+    {
+        "activo": "GOGLD",
+        "precio": "2,81"
+    },
+    {
+        "activo": "GOLD",
+        "precio": "11375,00"
+    },
+    {
+        "activo": "GOLDC",
+        "precio": "16,30"
+    },
+    {
+        "activo": "GOLDD",
+        "precio": "9,65"
+    },
+    {
+        "activo": "GOOGL",
+        "precio": "3290,00"
+    },
+    {
+        "activo": "GPRK",
+        "precio": "8330,00"
+    },
+    {
+        "activo": "GPRKD",
+        "precio": "7,10"
+    },
+    {
+        "activo": "GRMN",
+        "precio": "79250,00"
+    },
+    {
+        "activo": "GS",
+        "precio": "50100,00"
+    },
+    {
+        "activo": "GSD",
+        "precio": "43,00"
+    },
+    {
+        "activo": "GSK",
+        "precio": "11575,00"
+    },
+    {
+        "activo": "GSKC",
+        "precio": "9,84"
+    },
+    {
+        "activo": "GSKD",
+        "precio": "9,45"
+    },
+    {
+        "activo": "GT",
+        "precio": "6600,00"
+    },
+    {
+        "activo": "HAL",
+        "precio": "12375,00"
+    },
+    {
+        "activo": "HALD",
+        "precio": "10,55"
+    },
+    {
+        "activo": "HAPV3",
+        "precio": "521,00"
+    },
+    {
+        "activo": "HD",
+        "precio": "13350,00"
+    },
+    {
+        "activo": "HDB",
+        "precio": "43000,00"
+    },
+    {
+        "activo": "HL",
+        "precio": "7060,00"
+    },
+    {
+        "activo": "HMC",
+        "precio": "36550,00"
+    },
+    {
+        "activo": "HMY",
+        "precio": "18375,00"
+    },
+    {
+        "activo": "HMYD",
+        "precio": "15,85"
+    },
+    {
+        "activo": "HOG",
+        "precio": "9310,00"
+    },
+    {
+        "activo": "HON",
+        "precio": "29950,00"
+    },
+    {
+        "activo": "HPQ",
+        "precio": "30200,00"
+    },
+    {
+        "activo": "HSBC",
+        "precio": "33600,00"
+    },
+    {
+        "activo": "HSY",
+        "precio": "9310,00"
+    },
+    {
+        "activo": "HUT",
+        "precio": "77300,00"
+    },
+    {
+        "activo": "HUTD",
+        "precio": "65,90"
+    },
+    {
+        "activo": "HWM",
+        "precio": "161950,00"
+    },
+    {
+        "activo": "HWMD",
+        "precio": "126,00"
+    },
+    {
+        "activo": "IBIT",
+        "precio": "6450,00"
+    },
+    {
+        "activo": "IBITD",
+        "precio": "5,49"
+    },
+    {
+        "activo": "IBM",
+        "precio": "18950,00"
+    },
+    {
+        "activo": "IBMD",
+        "precio": "16,15"
+    },
+    {
+        "activo": "IFF",
+        "precio": "7650,00"
+    },
+    {
+        "activo": "INFY",
+        "precio": "20700,00"
+    },
+    {
+        "activo": "ING",
+        "precio": "7560,00"
+    },
+    {
+        "activo": "INTC",
+        "precio": "4945,00"
+    },
+    {
+        "activo": "INTCD",
+        "precio": "4,24"
+    },
+    {
+        "activo": "IP",
+        "precio": "14125,00"
+    },
+    {
+        "activo": "ISRG",
+        "precio": "6900,00"
+    },
+    {
+        "activo": "ITUB",
+        "precio": "7480,00"
+    },
+    {
+        "activo": "ITUBD",
+        "precio": "6,50"
+    },
+    {
+        "activo": "JCI",
+        "precio": "48675,00"
+    },
+    {
+        "activo": "JD",
+        "precio": "9890,00"
+    },
+    {
+        "activo": "JDD",
+        "precio": "8,60"
+    },
+    {
+        "activo": "JMIA",
+        "precio": "2875,00"
+    },
+    {
+        "activo": "JMIAD",
+        "precio": "2,41"
+    },
+    {
+        "activo": "JNJ",
+        "precio": "12425,00"
+    },
+    {
+        "activo": "JNJC",
+        "precio": "33,00"
+    },
+    {
+        "activo": "JNJD",
+        "precio": "10,60"
+    },
+    {
+        "activo": "JOYY",
+        "precio": "9800,00"
+    },
+    {
+        "activo": "JOYYD",
+        "precio": "6,48"
+    },
+    {
+        "activo": "JPM",
+        "precio": "19400,00"
+    },
+    {
+        "activo": "JPMD",
+        "precio": "16,70"
+    },
+    {
+        "activo": "KEP",
+        "precio": "10550,00"
+    },
+    {
+        "activo": "KGC",
+        "precio": "17475,00"
+    },
+    {
+        "activo": "KMB",
+        "precio": "26000,00"
+    },
+    {
+        "activo": "KMBC",
+        "precio": "20,75"
+    },
+    {
+        "activo": "KO",
+        "precio": "17175,00"
+    },
+    {
+        "activo": "KOC",
+        "precio": "14,70"
+    },
+    {
+        "activo": "KOD",
+        "precio": "14,60"
+    },
+    {
+        "activo": "KOFM",
+        "precio": "57550,00"
+    },
+    {
+        "activo": "LAC",
+        "precio": "3365,00"
+    },
+    {
+        "activo": "LACD",
+        "precio": "2,93"
+    },
+    {
+        "activo": "LAR",
+        "precio": "2465,00"
+    },
+    {
+        "activo": "LARD",
+        "precio": "2,15"
+    },
+    {
+        "activo": "LLY",
+        "precio": "18850,00"
+    },
+    {
+        "activo": "LLYD",
+        "precio": "16,70"
+    },
+    {
+        "activo": "LMT",
+        "precio": "28450,00"
+    },
+    {
+        "activo": "LMTD",
+        "precio": "23,90"
+    },
+    {
+        "activo": "LND",
+        "precio": "4610,00"
+    },
+    {
+        "activo": "LRCX",
+        "precio": "1510,00"
+    },
+    {
+        "activo": "LRCXD",
+        "precio": "1,40"
+    },
+    {
+        "activo": "LREN3",
+        "precio": "3070,00"
+    },
+    {
+        "activo": "LVS",
+        "precio": "21725,00"
+    },
+    {
+        "activo": "LYG",
+        "precio": "2345,00"
+    },
+    {
+        "activo": "MA",
+        "precio": "19500,00"
+    },
+    {
+        "activo": "MAC",
+        "precio": "11,15"
+    },
+    {
+        "activo": "MAD",
+        "precio": "16,50"
+    },
+    {
+        "activo": "MCD",
+        "precio": "15675,00"
+    },
+    {
+        "activo": "MCDD",
+        "precio": "13,45"
+    },
+    {
+        "activo": "MDLZ",
+        "precio": "5220,00"
+    },
+    {
+        "activo": "MDLZD",
+        "precio": "4,40"
+    },
+    {
+        "activo": "MDT",
+        "precio": "25125,00"
+    },
+    {
+        "activo": "MELI",
+        "precio": "22125,00"
+    },
+    {
+        "activo": "MELIC",
+        "precio": "17,20"
+    },
+    {
+        "activo": "MELID",
+        "precio": "18,75"
+    },
+    {
+        "activo": "META",
+        "precio": "27475,00"
+    },
+    {
+        "activo": "METAC",
+        "precio": "21,00"
+    },
+    {
+        "activo": "METAD",
+        "precio": "23,45"
+    },
+    {
+        "activo": "MFG",
+        "precio": "6040,00"
+    },
+    {
+        "activo": "MGLU3",
+        "precio": "2160,00"
+    },
+    {
+        "activo": "MMC",
+        "precio": "16400,00"
+    },
+    {
+        "activo": "MMM",
+        "precio": "16425,00"
+    },
+    {
+        "activo": "MMMD",
+        "precio": "13,95"
+    },
+    {
+        "activo": "MO",
+        "precio": "17575,00"
+    },
+    {
+        "activo": "MOD",
+        "precio": "15,00"
+    },
+    {
+        "activo": "MOS",
+        "precio": "7050,00"
+    },
+    {
+        "activo": "MOSD",
+        "precio": "5,53"
+    },
+    {
+        "activo": "MRK",
+        "precio": "20250,00"
+    },
+    {
+        "activo": "MRKD",
+        "precio": "17,20"
+    },
+    {
+        "activo": "MRNA",
+        "precio": "1740,00"
+    },
+    {
+        "activo": "MRNAD",
+        "precio": "1,45"
+    },
+    {
+        "activo": "MRVL",
+        "precio": "5000,00"
+    },
+    {
+        "activo": "MRVLD",
+        "precio": "4,03"
+    },
+    {
+        "activo": "MSFT",
+        "precio": "15700,00"
+    },
+    {
+        "activo": "MSFTC",
+        "precio": "13,95"
+    },
+    {
+        "activo": "MSFTD",
+        "precio": "13,40"
+    },
+    {
+        "activo": "MSI",
+        "precio": "25925,00"
+    },
+    {
+        "activo": "MSTR",
+        "precio": "22300,00"
+    },
+    {
+        "activo": "MSTRD",
+        "precio": "18,95"
+    },
+    {
+        "activo": "MU",
+        "precio": "18500,00"
+    },
+    {
+        "activo": "MUD",
+        "precio": "15,90"
+    },
+    {
+        "activo": "MUFG",
+        "precio": "14900,00"
+    },
+    {
+        "activo": "MUX",
+        "precio": "4635,00"
+    },
+    {
+        "activo": "MUXD",
+        "precio": "3,59"
+    },
+    {
+        "activo": "NEM",
+        "precio": "21250,00"
+    },
+    {
+        "activo": "NEMD",
+        "precio": "19,50"
+    },
+    {
+        "activo": "NFLX",
+        "precio": "27675,00"
+    },
+    {
+        "activo": "NFLXD",
+        "precio": "23,55"
+    },
+    {
+        "activo": "NG",
+        "precio": "20675,00"
+    },
+    {
+        "activo": "NGG",
+        "precio": "43400,00"
+    },
+    {
+        "activo": "NIO",
+        "precio": "1290,00"
+    },
+    {
+        "activo": "NIOD",
+        "precio": "1,10"
+    },
+    {
+        "activo": "NKE",
+        "precio": "5720,00"
+    },
+    {
+        "activo": "NKED",
+        "precio": "4,86"
+    },
+    {
+        "activo": "NOKA",
+        "precio": "5880,00"
+    },
+    {
+        "activo": "NTES",
+        "precio": "8990,00"
+    },
+    {
+        "activo": "NU",
+        "precio": "7290,00"
+    },
+    {
+        "activo": "NUD",
+        "precio": "6,20"
+    },
+    {
+        "activo": "NUE",
+        "precio": "8660,00"
+    },
+    {
+        "activo": "NVDA",
+        "precio": "5420,00"
+    },
+    {
+        "activo": "NVDAD",
+        "precio": "4,62"
+    },
+    {
+        "activo": "NVS",
+        "precio": "33650,00"
+    },
+    {
+        "activo": "NVSD",
+        "precio": "26,20"
+    },
+    {
+        "activo": "NXE",
+        "precio": "6200,00"
+    },
+    {
+        "activo": "ORCL",
+        "precio": "56100,00"
+    },
+    {
+        "activo": "ORLY",
+        "precio": "7390,00"
+    },
+    {
+        "activo": "OXY",
+        "precio": "9610,00"
+    },
+    {
+        "activo": "OXYD",
+        "precio": "8,13"
+    },
+    {
+        "activo": "PAAS",
+        "precio": "10050,00"
+    },
+    {
+        "activo": "PAASD",
+        "precio": "8,50"
+    },
+    {
+        "activo": "PAC",
+        "precio": "15175,00"
+    },
+    {
+        "activo": "PAGS",
+        "precio": "3980,00"
+    },
+    {
+        "activo": "PAGSD",
+        "precio": "3,39"
+    },
+    {
+        "activo": "PANW",
+        "precio": "4420,00"
+    },
+    {
+        "activo": "PANWD",
+        "precio": "3,70"
+    },
+    {
+        "activo": "PBI",
+        "precio": "10000,00"
+    },
+    {
+        "activo": "PBR",
+        "precio": "13775,00"
+    },
+    {
+        "activo": "PBRD",
+        "precio": "11,75"
+    },
+    {
+        "activo": "PCAR",
+        "precio": "34600,00"
+    },
+    {
+        "activo": "PEP",
+        "precio": "8850,00"
+    },
+    {
+        "activo": "PEPC",
+        "precio": "8,05"
+    },
+    {
+        "activo": "PEPD",
+        "precio": "7,62"
+    },
+    {
+        "activo": "PFE",
+        "precio": "6960,00"
+    },
+    {
+        "activo": "PFED",
+        "precio": "6,09"
+    },
+    {
+        "activo": "PG",
+        "precio": "12900,00"
+    },
+    {
+        "activo": "PGD",
+        "precio": "10,95"
+    },
+    {
+        "activo": "PHG",
+        "precio": "6040,00"
+    },
+    {
+        "activo": "PINS",
+        "precio": "4365,00"
+    },
+    {
+        "activo": "PINSD",
+        "precio": "3,95"
+    },
+    {
+        "activo": "PKS",
+        "precio": "18350,00"
+    },
+    {
+        "activo": "PLTR",
+        "precio": "45400,00"
+    },
+    {
+        "activo": "PLTRD",
+        "precio": "38,35"
+    },
+    {
+        "activo": "PM",
+        "precio": "11250,00"
+    },
+    {
+        "activo": "PMD",
+        "precio": "7,70"
+    },
+    {
+        "activo": "PRIO3",
+        "precio": "3600,00"
+    },
+    {
+        "activo": "PSX",
+        "precio": "21100,00"
+    },
+    {
+        "activo": "PSXD",
+        "precio": "21,60"
+    },
+    {
+        "activo": "PYPL",
+        "precio": "9710,00"
+    },
+    {
+        "activo": "PYPLD",
+        "precio": "8,35"
+    },
+    {
+        "activo": "QCOM",
+        "precio": "16025,00"
+    },
+    {
+        "activo": "QCOMC",
+        "precio": "14,25"
+    },
+    {
+        "activo": "QCOMD",
+        "precio": "13,40"
+    },
+    {
+        "activo": "RACE",
+        "precio": "6510,00"
+    },
+    {
+        "activo": "RACED",
+        "precio": "5,50"
+    },
+    {
+        "activo": "RBLX",
+        "precio": "39500,00"
+    },
+    {
+        "activo": "RBLXD",
+        "precio": "31,45"
+    },
+    {
+        "activo": "RENT3",
+        "precio": "4585,00"
+    },
+    {
+        "activo": "RIO",
+        "precio": "9160,00"
+    },
+    {
+        "activo": "RIOD",
+        "precio": "7,81"
+    },
+    {
+        "activo": "RIOT",
+        "precio": "2970,00"
+    },
+    {
+        "activo": "RIOTD",
+        "precio": "2,56"
+    },
+    {
+        "activo": "ROKU",
+        "precio": "6280,00"
+    },
+    {
+        "activo": "ROKUD",
+        "precio": "5,00"
+    },
+    {
+        "activo": "ROST",
+        "precio": "41850,00"
+    },
+    {
+        "activo": "RTX",
+        "precio": "30100,00"
+    },
+    {
+        "activo": "SAN",
+        "precio": "35375,00"
+    },
+    {
+        "activo": "SAP",
+        "precio": "58150,00"
+    },
+    {
+        "activo": "SATL",
+        "precio": "4675,00"
+    },
+    {
+        "activo": "SATLD",
+        "precio": "4,05"
+    },
+    {
+        "activo": "SBS",
+        "precio": "48975,00"
+    },
+    {
+        "activo": "SBUX",
+        "precio": "8420,00"
+    },
+    {
+        "activo": "SBUXD",
+        "precio": "7,11"
+    },
+    {
+        "activo": "SCCO",
+        "precio": "55900,00"
+    },
+    {
+        "activo": "SDA",
+        "precio": "1560,00"
+    },
+    {
+        "activo": "SE",
+        "precio": "4900,00"
+    },
+    {
+        "activo": "SED",
+        "precio": "3,80"
+    },
+    {
+        "activo": "SH",
+        "precio": "6640,00"
+    },
+    {
+        "activo": "SHD",
+        "precio": "5,62"
+    },
+    {
+        "activo": "SHEL",
+        "precio": "39250,00"
+    },
+    {
+        "activo": "SHOP",
+        "precio": "1110,00"
+    },
+    {
+        "activo": "SHOPC",
+        "precio": "14,15"
+    },
+    {
+        "activo": "SHOPD",
+        "precio": "0,94"
+    },
+    {
+        "activo": "SID",
+        "precio": "16400,00"
+    },
+    {
+        "activo": "SLB",
+        "precio": "13600,00"
+    },
+    {
+        "activo": "SLBD",
+        "precio": "11,20"
+    },
+    {
+        "activo": "SNA",
+        "precio": "61750,00"
+    },
+    {
+        "activo": "SNAP",
+        "precio": "10700,00"
+    },
+    {
+        "activo": "SNOW",
+        "precio": "6330,00"
+    },
+    {
+        "activo": "SNOWC",
+        "precio": "9,90"
+    },
+    {
+        "activo": "SNOWD",
+        "precio": "5,40"
+    },
+    {
+        "activo": "SONY",
+        "precio": "3875,00"
+    },
+    {
+        "activo": "SPCE",
+        "precio": "7170,00"
+    },
+    {
+        "activo": "SPGI",
+        "precio": "12925,00"
+    },
+    {
+        "activo": "SPGID",
+        "precio": "11,30"
+    },
+    {
+        "activo": "SPOT",
+        "precio": "23200,00"
+    },
+    {
+        "activo": "SPOTD",
+        "precio": "20,40"
+    },
+    {
+        "activo": "STLA",
+        "precio": "2275,00"
+    },
+    {
+        "activo": "STLAD",
+        "precio": "1,89"
+    },
+    {
+        "activo": "STNE",
+        "precio": "5670,00"
+    },
+    {
+        "activo": "SUZ",
+        "precio": "10575,00"
+    },
+    {
+        "activo": "SWKS",
+        "precio": "3450,00"
+    },
+    {
+        "activo": "SYY",
+        "precio": "10500,00"
+    },
+    {
+        "activo": "T",
+        "precio": "10850,00"
+    },
+    {
+        "activo": "TCOM",
+        "precio": "34750,00"
+    },
+    {
+        "activo": "TD",
+        "precio": "9,17"
+    },
+    {
+        "activo": "TEFO",
+        "precio": "750,00"
+    },
+    {
+        "activo": "TEN",
+        "precio": "40050,00"
+    },
+    {
+        "activo": "TEND",
+        "precio": "34,05"
+    },
+    {
+        "activo": "TGT",
+        "precio": "4815,00"
+    },
+    {
+        "activo": "TIMB",
+        "precio": "19525,00"
+    },
+    {
+        "activo": "TJX",
+        "precio": "7060,00"
+    },
+    {
+        "activo": "TM",
+        "precio": "15550,00"
+    },
+    {
+        "activo": "TMD",
+        "precio": "13,20"
+    },
+    {
+        "activo": "TMO",
+        "precio": "22875,00"
+    },
+    {
+        "activo": "TMUS",
+        "precio": "8550,00"
+    },
+    {
+        "activo": "TMUSD",
+        "precio": "7,26"
+    },
+    {
+        "activo": "TRIP",
+        "precio": "7690,00"
+    },
+    {
+        "activo": "TRVV",
+        "precio": "51500,00"
+    },
+    {
+        "activo": "TSLA",
+        "precio": "22575,00"
+    },
+    {
+        "activo": "TSLAC",
+        "precio": "18,90"
+    },
+    {
+        "activo": "TSLAD",
+        "precio": "19,15"
+    },
+    {
+        "activo": "TSM",
+        "precio": "21950,00"
+    },
+    {
+        "activo": "TSMD",
+        "precio": "19,25"
+    },
+    {
+        "activo": "TTE",
+        "precio": "23800,00"
+    },
+    {
+        "activo": "TV",
+        "precio": "770,00"
+    },
+    {
+        "activo": "TVD",
+        "precio": "0,58"
+    },
+    {
+        "activo": "TWLO",
+        "precio": "3230,00"
+    },
+    {
+        "activo": "TWLOD",
+        "precio": "3,34"
+    },
+    {
+        "activo": "TXN",
+        "precio": "38600,00"
+    },
+    {
+        "activo": "TXND",
+        "precio": "31,60"
+    },
+    {
+        "activo": "TXR",
+        "precio": "8830,00"
+    },
+    {
+        "activo": "TXRD",
+        "precio": "7,35"
+    },
+    {
+        "activo": "UAL",
+        "precio": "16425,00"
+    },
+    {
+        "activo": "UALD",
+        "precio": "13,80"
+    },
+    {
+        "activo": "UBER",
+        "precio": "47150,00"
+    },
+    {
+        "activo": "UBERD",
+        "precio": "40,00"
+    },
+    {
+        "activo": "UGP",
+        "precio": "3800,00"
+    },
+    {
+        "activo": "UL",
+        "precio": "25075,00"
+    },
+    {
+        "activo": "UNH",
+        "precio": "15075,00"
+    },
+    {
+        "activo": "UNHC",
+        "precio": "15,40"
+    },
+    {
+        "activo": "UNHD",
+        "precio": "12,85"
+    },
+    {
+        "activo": "UNP",
+        "precio": "12625,00"
+    },
+    {
+        "activo": "UNPD",
+        "precio": "11,20"
+    },
+    {
+        "activo": "UPST",
+        "precio": "11800,00"
+    },
+    {
+        "activo": "UPSTD",
+        "precio": "10,20"
+    },
+    {
+        "activo": "URBN",
+        "precio": "29800,00"
+    },
+    {
+        "activo": "USB",
+        "precio": "9560,00"
+    },
+    {
+        "activo": "V",
+        "precio": "22425,00"
+    },
+    {
+        "activo": "VALE",
+        "precio": "5680,00"
+    },
+    {
+        "activo": "VALED",
+        "precio": "4,80"
+    },
+    {
+        "activo": "VD",
+        "precio": "19,05"
+    },
+    {
+        "activo": "VIST",
+        "precio": "18300,00"
+    },
+    {
+        "activo": "VISTD",
+        "precio": "15,55"
+    },
+    {
+        "activo": "VIV",
+        "precio": "11325,00"
+    },
+    {
+        "activo": "VOD",
+        "precio": "11375,00"
+    },
+    {
+        "activo": "VRSN",
+        "precio": "54800,00"
+    },
+    {
+        "activo": "VZ",
+        "precio": "12725,00"
+    },
+    {
+        "activo": "VZD",
+        "precio": "10,70"
+    },
+    {
+        "activo": "WBA",
+        "precio": "4365,00"
+    },
+    {
+        "activo": "WBAD",
+        "precio": "3,67"
+    },
+    {
+        "activo": "WBO",
+        "precio": "1630,00"
+    },
+    {
+        "activo": "WFC",
+        "precio": "16675,00"
+    },
+    {
+        "activo": "WFCC",
+        "precio": "7,50"
+    },
+    {
+        "activo": "WFCD",
+        "precio": "14,00"
+    },
+    {
+        "activo": "WMT",
+        "precio": "6320,00"
+    },
+    {
+        "activo": "WMTD",
+        "precio": "5,40"
+    },
+    {
+        "activo": "X",
+        "precio": "17275,00"
+    },
+    {
+        "activo": "XD",
+        "precio": "14,65"
+    },
+    {
+        "activo": "XOM",
+        "precio": "12875,00"
+    },
+    {
+        "activo": "XOMD",
+        "precio": "11,05"
+    },
+    {
+        "activo": "XP",
+        "precio": "4865,00"
+    },
+    {
+        "activo": "XPD",
+        "precio": "3,88"
+    },
+    {
+        "activo": "XROX",
+        "precio": "5200,00"
+    },
+    {
+        "activo": "XYZ",
+        "precio": "3565,00"
+    },
+    {
+        "activo": "XYZC",
+        "precio": "13,25"
+    },
+    {
+        "activo": "XYZD",
+        "precio": "3,00"
+    },
+    {
+        "activo": "YELP",
+        "precio": "21000,00"
+    },
+    {
+        "activo": "ZM",
+        "precio": "1955,00"
+    },
+    {
+        "activo": "ZMC",
+        "precio": "6,15"
+    },
+    {
+        "activo": "ZMD",
+        "precio": "1,64"
+    }
+]
