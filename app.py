@@ -6,6 +6,11 @@ import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="Portfolio Tracker", page_icon="💰", layout="wide")
 
+# Reiniciar la app si se activó el reset
+if st.session_state.get("reset_sidebar", False):
+    st.session_state["reset_sidebar"] = False
+    st.experimental_rerun()
+
 # ----------------------
 # Funciones auxiliares
 # ----------------------
@@ -42,9 +47,8 @@ def load_portfolio():
     return []
 
 def reset_sidebar():
-    """Reset sidebar inputs and rerun the app."""
-    st.session_state["reset_sidebar"] = False
-    st.experimental_rerun()
+    """Marca la bandera para reiniciar los inputs en el siguiente ciclo."""
+    st.session_state["reset_sidebar"] = True
 
 # ----------------------
 # Inicialización
