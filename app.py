@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import json
 import os
-import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="Portfolio Tracker", page_icon="💰", layout="wide")
 
@@ -54,9 +53,9 @@ if "initialized" not in st.session_state:
     st.session_state["initialized"] = True
 
 # Ejecutar el reset si está activado
-if st.session_state["reset_sidebar"]:
-    st.write("Rerunning app due to reset_sidebar...")  # Debugging log
-    st.session_state["reset_sidebar"] = False  # Prevent infinite rerun loop
+if st.session_state.get("reset_sidebar", False):
+    st.write("Reset sidebar triggered. Rerunning app...")  # Debugging log
+    st.session_state["reset_sidebar"] = False  # Reset the flag
     st.experimental_rerun()
 
 # ----------------------
@@ -112,7 +111,7 @@ if st.sidebar.button("Agregar al portfolio"):
                     "Precio actual": precio,
                     "Valor de la posición": cantidad * precio
                 })
-            st.session_state["reset_sidebar"] = True  # Trigger rerun
+            st.session_state["reset_sidebar"] = True
         except IndexError:
             st.error("Error al obtener el precio del activo seleccionado.")
     else:
@@ -167,14 +166,6 @@ if st.session_state["portfolio"]:
     # Total del Portfolio
     st.subheader("📈 Resumen del Portfolio")
     st.metric("Valor Total del Portfolio", f"${total_valor:,.2f}")
-
-    # Gráfico de distribución
-    portfolio_df = pd.DataFrame(st.session_state["portfolio"])
-    if not portfolio_df.empty:
-        fig, ax = plt.subplots()
-        portfolio_df.set_index('Activo')["Valor de la posición"].plot.pie(autopct='%1.1f%%', ax=ax, figsize=(6, 6))
-        ax.set_ylabel("")
-        st.pyplot(fig)
 
 else:
     st.info("Todavía no agregaste activos al portfolio.")
