@@ -60,12 +60,14 @@ if "initialized" not in st.session_state:
 
 # Ejecutar el reset si está activado
 if st.session_state["reset_sidebar"]:
-    st.write("Reset sidebar triggered. Rerunning app...")  # Debug statement
-    st.session_state["tipo_activo"] = ""
-    st.session_state["selected_activo"] = ""
-    st.session_state["cantidad_input"] = 0
+    # Debugging output
+    st.write("Reset sidebar triggered. Rerunning app...")
+
+    # Reset the state to prevent infinite loops
     st.session_state["reset_sidebar"] = False
-    st.experimental_rerun()  # Reinicia la aplicación desde arriba
+
+    # Trigger rerun safely
+    st.experimental_rerun()
 
 # ----------------------
 # UI
@@ -186,4 +188,3 @@ if st.session_state["portfolio"]:
 
 else:
     st.info("Todavía no agregaste activos al portfolio.")
-
