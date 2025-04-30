@@ -1,19 +1,4 @@
 import streamlit as st
-
-# Inicialización segura del session_state
-if "initialized" not in st.session_state:
-    st.session_state["reset_sidebar"] = False
-    st.session_state["portfolio"] = []
-    st.session_state["tipo_activo"] = ""
-    st.session_state["selected_activo"] = ""
-    st.session_state["cantidad_input"] = 0
-    st.session_state["initialized"] = True
-
-# Ejecutar rerun si se activó el reset del sidebar (en un segundo ciclo)
-if st.session_state.get("reset_sidebar", False):
-    st.session_state["reset_sidebar"] = False
-    st.experimental_rerun()
-
 import pandas as pd
 import json
 import os
@@ -56,14 +41,31 @@ def load_portfolio():
             return json.load(f)
     return []
 
-def reset_sidebar_values():
-    st.session_state["tipo_activo"] = ""
-    st.session_state["selected_activo"] = ""
-    st.session_state["cantidad_input"] = 0
+def marcar_reset_sidebar():
     st.session_state["reset_sidebar"] = True
 
 # ----------------------
-# Interfaz principal
+# Inicialización de estados
+# ----------------------
+
+if "initialized" not in st.session_state:
+    st.session_state["portfolio"] = load_portfolio()
+    st.session_state["tipo_activo"] = ""
+    st.session_state["selected_activo"] = ""
+    st.session_state["cantidad_input"] = 0
+    st.session_state["reset_sidebar"] = False
+    st.session_state["initialized"] = True
+
+# Ejecutar el reset si está activado
+if st.session_state["reset_sidebar"]:
+    st.session_state["tipo_activo"] = ""
+    st.session_state["selected_activo"] = ""
+    st.session_state["cantidad_input"] = 0
+    st.session_state["reset_sidebar"] = False
+    st.experimental_rerun()
+
+# ----------------------
+# UI
 # ----------------------
 
 st.title("💰 Portfolio Tracker")
@@ -115,7 +117,7 @@ if st.sidebar.button("Agregar al portfolio"):
                     "Precio actual": precio,
                     "Valor de la posición": cantidad * precio
                 })
-            reset_sidebar_values()
+            marcar_reset_sidebar()
         except IndexError:
             st.error("Error al obtener el precio del activo seleccionado.")
     else:
@@ -128,9 +130,9 @@ if st.sidebar.button("🔄 Reiniciar Portfolio"):
     if os.path.exists("portfolio.json"):
         os.remove("portfolio.json")
     st.success("Portfolio reiniciado.")
-    reset_sidebar_values()
+    marcar_reset_sidebar()
 
-if st.sidebar.button("💾 Guardar Portfolio"):
+if st.sidebar.button("📂 Guardar Portfolio"):
     save_portfolio(st.session_state["portfolio"])
 
 # ----------------------
@@ -157,12 +159,12 @@ if st.session_state["portfolio"]:
                 if st.button(f"Actualizar {item['Activo']}", key=f"update_{idx}"):
                     item["Cantidad"] = nueva_cantidad
                     item["Valor de la posición"] = nueva_cantidad * item["Precio actual"]
-                    reset_sidebar_values()
+                    marcar_reset_sidebar()
 
             with col2:
                 if st.button(f"🗑️ Borrar {item['Activo']}", key=f"delete_{idx}"):
                     st.session_state["portfolio"].pop(idx)
-                    reset_sidebar_values()
+                    marcar_reset_sidebar()
 
             with col3:
                 st.metric(label="Valor actual", value=f"${item['Valor de la posición']:,.2f}")
