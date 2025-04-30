@@ -40,6 +40,13 @@ def load_portfolio():
             return json.load(f)
     return []
 
+def reset_sidebar():
+    """Función segura para reiniciar el estado del sidebar sin reiniciar toda la aplicación."""
+    st.session_state["tipo_activo"] = ""
+    st.session_state["selected_activo"] = ""
+    st.session_state["cantidad_input"] = 0
+    st.session_state["reset_sidebar"] = False
+
 # ----------------------
 # Inicialización de estados
 # ----------------------
@@ -52,11 +59,9 @@ if "initialized" not in st.session_state:
     st.session_state["reset_sidebar"] = False
     st.session_state["initialized"] = True
 
-# Ejecutar el reset si está activado
+# Ejecutar el reinicio del sidebar si es necesario
 if st.session_state.get("reset_sidebar", False):
-    st.write("Reset sidebar triggered. Rerunning app...")  # Debugging log
-    st.session_state["reset_sidebar"] = False  # Reset the flag
-    st.experimental_rerun()
+    reset_sidebar()
 
 # ----------------------
 # UI
@@ -111,7 +116,7 @@ if st.sidebar.button("Agregar al portfolio"):
                     "Precio actual": precio,
                     "Valor de la posición": cantidad * precio
                 })
-            st.session_state["reset_sidebar"] = True
+            st.session_state["reset_sidebar"] = True  # Marcar sidebar para reinicio seguro
         except IndexError:
             st.error("Error al obtener el precio del activo seleccionado.")
     else:
@@ -124,7 +129,7 @@ if st.sidebar.button("🔄 Reiniciar Portfolio"):
     if os.path.exists("portfolio.json"):
         os.remove("portfolio.json")
     st.success("Portfolio reiniciado.")
-    st.session_state["reset_sidebar"] = True
+    st.session_state["reset_sidebar"] = True  # Marcar sidebar para reinicio seguro
 
 if st.sidebar.button("📂 Guardar Portfolio"):
     save_portfolio(st.session_state["portfolio"])
