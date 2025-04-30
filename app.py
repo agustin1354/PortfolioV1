@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import json
 import os
+import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="Portfolio Tracker", page_icon="💰", layout="wide")
 
@@ -171,6 +172,17 @@ if st.session_state["portfolio"]:
     # Total del Portfolio
     st.subheader("📈 Resumen del Portfolio")
     st.metric("Valor Total del Portfolio", f"${total_valor:,.2f}")
+
+    # Gráfico de distribución
+    portfolio_df = pd.DataFrame(st.session_state["portfolio"])
+    if not portfolio_df.empty:
+        fig, ax = plt.subplots()
+        portfolio_df.set_index('Activo')["Valor de la posición"].plot.pie(
+            autopct='%1.1f%%', ax=ax, figsize=(6, 6), startangle=90
+        )
+        ax.set_ylabel("")
+        ax.set_title("Distribución del Valor del Portfolio")
+        st.pyplot(fig)
 
 else:
     st.info("Todavía no agregaste activos al portfolio.")
