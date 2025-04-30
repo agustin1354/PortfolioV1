@@ -50,6 +50,7 @@ def marcar_reset_sidebar():
 # ----------------------
 
 if "initialized" not in st.session_state:
+    # Inicializar todos los estados necesarios
     st.session_state["portfolio"] = load_portfolio()
     st.session_state["tipo_activo"] = ""
     st.session_state["selected_activo"] = ""
@@ -59,6 +60,7 @@ if "initialized" not in st.session_state:
 
 # Ejecutar el reset si está activado
 if st.session_state["reset_sidebar"]:
+    st.write("Reset sidebar triggered. Rerunning app...")  # Debug statement
     st.session_state["tipo_activo"] = ""
     st.session_state["selected_activo"] = ""
     st.session_state["cantidad_input"] = 0
