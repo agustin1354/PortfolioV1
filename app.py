@@ -109,7 +109,7 @@ if st.session_state.get("reset_sidebar", False):
 # ----------------------
 
 st.title("💰 Portfolio Tracker")
-st.session_state.clear()
+# st.session_state.clear()
 
 # Sidebar - Agregar posiciones
 with st.sidebar:
