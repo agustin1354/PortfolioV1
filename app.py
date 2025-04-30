@@ -10,30 +10,50 @@ st.set_page_config(page_title="Portfolio Tracker", page_icon="💰", layout="wid
 # Funciones auxiliares
 # ----------------------
 
-@st.cache_data
-def load_data(tipo):
-    archivo = "bonos.json" if tipo == "BONOS" else "cedears.json"
+def load_json_file(archivo):
+    """Carga un archivo JSON y maneja errores."""
     try:
+        if not os.path.exists(archivo):
+            st.error(f"No se encontró el archivo {archivo}.")
+            return []
         with open(archivo, "r") as f:
-            data = json.load(f)
-        df = pd.DataFrame(data)
-        if tipo == "CEDEARS":
-            df["precio"] = df["precio"].astype(str).str.replace(".", "", regex=False).str.replace(",", ".").astype(float)
-            df.rename(columns={"activo": "nombre"}, inplace=True)
-        else:
-            df.rename(columns={"bono": "nombre"}, inplace=True)
-        return df
+            return json.load(f)
     except Exception as e:
         st.error(f"Error cargando {archivo}: {e}")
-        return pd.DataFrame(columns=["nombre", "precio"])
+        return []
+
+def process_bonos_data(data):
+    df = pd.DataFrame(data)
+    df.rename(columns={"bono": "nombre"}, inplace=True)
+    return df[["nombre", "precio"]]
+
+def process_cedears_data(data):
+    df = pd.DataFrame(data)
+    df["precio"] = (
+        df["precio"].astype(str)
+        .str.replace(".", "", regex=False)
+        .str.replace(",", ".")
+        .astype(float)
+    )
+    df.rename(columns={"activo": "nombre"}, inplace=True)
+    return df[["nombre", "precio"]]
+
+def load_data(tipo):
+    archivo = "data/bonos.json" if tipo == "BONOS" else "data/cedears.json"
+    data = load_json_file(archivo)
+
+    if tipo == "CEDEARS":
+        return process_cedears_data(data)
+    else:
+        return process_bonos_data(data)
 
 def save_portfolio(portfolio):
     try:
         with open("portfolio.json", "w") as f:
             json.dump(portfolio, f, indent=4)
-        st.success("¡Portfolio guardado exitosamente!")
+        st.toast("✅ ¡Portfolio guardado exitosamente!")
     except Exception as e:
-        st.error(f"Error guardando portfolio: {e}")
+        st.error(f"❌ Error guardando portfolio: {e}")
 
 def load_portfolio():
     if os.path.exists("portfolio.json"):
@@ -42,14 +62,28 @@ def load_portfolio():
     return []
 
 def reset_sidebar():
-    """Función segura para reiniciar el estado del sidebar sin reiniciar toda la aplicación."""
+    """Reinicia campos del sidebar para nueva entrada."""
     st.session_state["tipo_activo"] = ""
     st.session_state["selected_activo"] = ""
     st.session_state["cantidad_input"] = 0
-    st.session_state["reset_sidebar"] = False
+
+def update_portfolio_values(portfolio, bonos_df, cedears_df):
+    """Recalcula los valores del portfolio con precios actualizados."""
+    for item in portfolio:
+        if item["Tipo"] == "BONOS" and bonos_df is not None:
+            row = bonos_df[bonos_df["nombre"] == item["Activo"]]
+        elif item["Tipo"] == "CEDEARS" and cedears_df is not None:
+            row = cedears_df[cedears_df["nombre"] == item["Activo"]]
+        else:
+            continue
+
+        if not row.empty:
+            item["Precio actual"] = float(row["precio"].values[0])
+            item["Valor de la posición"] = round(item["Cantidad"] * item["Precio actual"], 2)
+    return portfolio
 
 # ----------------------
-# Inicialización de estados
+# Inicialización de estados (una sola vez)
 # ----------------------
 
 if "initialized" not in st.session_state:
@@ -57,95 +91,115 @@ if "initialized" not in st.session_state:
     st.session_state["tipo_activo"] = ""
     st.session_state["selected_activo"] = ""
     st.session_state["cantidad_input"] = 0
-    st.session_state["reset_sidebar"] = False
     st.session_state["initialized"] = True
 
-# Ejecutar el reinicio del sidebar si es necesario
+# Cargar datos al inicio si no están en caché
+if "cached_bonos" not in st.session_state:
+    st.session_state.cached_bonos = load_data("BONOS")
+if "cached_cedears" not in st.session_state:
+    st.session_state.cached_cedears = load_data("CEDEARS")
+
+# Ejecutar reinicio seguro del sidebar si es necesario
 if st.session_state.get("reset_sidebar", False):
     reset_sidebar()
+    st.session_state.reset_sidebar = False
 
 # ----------------------
-# UI
+# UI Principal
 # ----------------------
 
 st.title("💰 Portfolio Tracker")
 
-# Sidebar para agregar posiciones
-st.sidebar.header("Agregar una posición")
+# Sidebar - Agregar posiciones
+with st.sidebar:
+    st.header("➕ Agregar una posición")
 
-tipo_activo = st.sidebar.selectbox("Tipo de activo", [""] + ["BONOS", "CEDEARS"], key="tipo_activo")
+    tipo_activo = st.selectbox(
+        "Tipo de activo",
+        ["", "BONOS", "CEDEARS"],
+        key="tipo_activo"
+    )
 
-if tipo_activo:
-    activos_df = load_data(tipo_activo)
-    if not activos_df.empty:
-        selected_activo = st.sidebar.selectbox(
+    if tipo_activo:
+        activos_df = st.session_state.cached_bonos if tipo_activo == "BONOS" else st.session_state.cached_cedears
+        selected_activo = st.selectbox(
             f"Seleccionar {tipo_activo}",
             [""] + list(activos_df["nombre"].unique()),
             key="selected_activo"
         )
     else:
-        st.sidebar.warning(f"No se encontraron activos para {tipo_activo}.")
         selected_activo = ""
-else:
-    activos_df = pd.DataFrame()
-    selected_activo = ""
 
-cantidad = st.sidebar.number_input(
-    "Cantidad de títulos",
-    min_value=0,
-    value=st.session_state["cantidad_input"],
-    step=1,
-    key="cantidad_input"
-)
+    cantidad = st.number_input(
+        "Cantidad de títulos",
+        min_value=0,
+        value=st.session_state.get("cantidad_input", 0),
+        step=1,
+        key="cantidad_input"
+    )
 
-if st.sidebar.button("Agregar al portfolio"):
-    if tipo_activo and selected_activo and cantidad > 0:
-        try:
-            precio = activos_df.loc[activos_df["nombre"] == selected_activo, "precio"].values[0]
-            encontrado = False
-            for item in st.session_state["portfolio"]:
-                if item["Activo"] == selected_activo and item["Tipo"] == tipo_activo:
-                    item["Cantidad"] += cantidad
-                    item["Valor de la posición"] = item["Cantidad"] * item["Precio actual"]
-                    encontrado = True
-                    break
-            if not encontrado:
-                st.session_state["portfolio"].append({
-                    "Activo": selected_activo,
-                    "Tipo": tipo_activo,
-                    "Cantidad": cantidad,
-                    "Precio actual": precio,
-                    "Valor de la posición": cantidad * precio
-                })
-            st.session_state["reset_sidebar"] = True  # Marcar sidebar para reinicio seguro
-        except IndexError:
-            st.error("Error al obtener el precio del activo seleccionado.")
-    else:
-        st.warning("Seleccioná un tipo de activo, un activo y una cantidad mayor a 0.")
+    if st.button("Agregar al portfolio", use_container_width=True):
+        if tipo_activo and selected_activo and cantidad > 0:
+            df = st.session_state.cached_bonos if tipo_activo == "BONOS" else st.session_state.cached_cedears
+            if selected_activo not in df["nombre"].values:
+                st.error("❌ Activo seleccionado no encontrado.")
+            else:
+                precio = df[df["nombre"] == selected_activo]["precio"].values[0]
+                encontrado = False
+                for item in st.session_state["portfolio"]:
+                    if item["Activo"] == selected_activo and item["Tipo"] == tipo_activo:
+                        item["Cantidad"] += cantidad
+                        item["Valor de la posición"] = round(item["Cantidad"] * item["Precio actual"], 2)
+                        encontrado = True
+                        break
+                if not encontrado:
+                    st.session_state["portfolio"].append({
+                        "Activo": selected_activo,
+                        "Tipo": tipo_activo,
+                        "Cantidad": cantidad,
+                        "Precio actual": precio,
+                        "Valor de la posición": round(cantidad * precio, 2)
+                    })
+                st.session_state.reset_sidebar = True
+                st.toast("✅ ¡Activo agregado correctamente!")
+        else:
+            st.warning("⚠️ Seleccione todos los campos.")
 
-# Sidebar opciones generales
-st.sidebar.header("Opciones del Portfolio")
-if st.sidebar.button("🔄 Reiniciar Portfolio"):
-    st.session_state["portfolio"] = []
-    if os.path.exists("portfolio.json"):
-        os.remove("portfolio.json")
-    st.success("Portfolio reiniciado.")
-    st.session_state["reset_sidebar"] = True  # Marcar sidebar para reinicio seguro
-
-if st.sidebar.button("📂 Guardar Portfolio"):
-    save_portfolio(st.session_state["portfolio"])
+    st.markdown("---")
+    st.header("⚙️ Opciones del Portfolio")
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("🔄 Limpiar"):
+            st.session_state["portfolio"] = []
+            if os.path.exists("portfolio.json"):
+                os.remove("portfolio.json")
+            st.toast("🗑️ Portfolio borrado.")
+            st.session_state.reset_sidebar = True
+    with col2:
+        if st.button("📂 Guardar"):
+            save_portfolio(st.session_state["portfolio"])
 
 # ----------------------
 # Mostrar Portfolio
 # ----------------------
 
-st.subheader("📂 Mi Portfolio")
+st.subheader("📁 Mi Portfolio")
 
 if st.session_state["portfolio"]:
+    # Actualizar valores del portfolio con precios actuales
+    st.session_state["portfolio"] = update_portfolio_values(
+        st.session_state["portfolio"],
+        st.session_state.cached_bonos,
+        st.session_state.cached_cedears
+    )
+
     total_valor = sum(item["Valor de la posición"] for item in st.session_state["portfolio"])
 
     for idx, item in enumerate(st.session_state["portfolio"]):
-        with st.expander(f"{item['Tipo']} - {item['Activo']} - {item['Cantidad']} títulos - ${item['Valor de la posición']:,.2f}", expanded=False):
+        with st.expander(
+            f"{item['Tipo']} - {item['Activo']} - {item['Cantidad']} títulos - ${item['Valor de la posición']:,.2f}",
+            expanded=False
+        ):
             col1, col2, col3 = st.columns([2, 2, 1])
 
             with col1:
@@ -156,33 +210,35 @@ if st.session_state["portfolio"]:
                     step=1,
                     key=f"editar_{idx}"
                 )
-                if st.button(f"Actualizar {item['Activo']}", key=f"update_{idx}"):
+                if st.button(f"Actualizar 💾", key=f"update_{idx}", use_container_width=True):
                     item["Cantidad"] = nueva_cantidad
-                    item["Valor de la posición"] = nueva_cantidad * item["Precio actual"]
-                    st.session_state["reset_sidebar"] = True
+                    item["Valor de la posición"] = round(nueva_cantidad * item["Precio actual"], 2)
+                    st.session_state.reset_sidebar = True
+                    st.toast("🔁 Valor actualizado.")
 
             with col2:
-                if st.button(f"🗑️ Borrar {item['Activo']}", key=f"delete_{idx}"):
+                if st.button(f"Eliminar 🗑️", key=f"delete_{idx}", use_container_width=True):
                     st.session_state["portfolio"].pop(idx)
-                    st.session_state["reset_sidebar"] = True
+                    st.session_state.reset_sidebar = True
+                    st.toast("🗑️ Elemento eliminado.")
 
             with col3:
                 st.metric(label="Valor actual", value=f"${item['Valor de la posición']:,.2f}")
 
-    # Total del Portfolio
+    # Resumen del Portfolio
     st.subheader("📈 Resumen del Portfolio")
     st.metric("Valor Total del Portfolio", f"${total_valor:,.2f}")
 
     # Gráfico de distribución
     portfolio_df = pd.DataFrame(st.session_state["portfolio"])
     if not portfolio_df.empty:
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=(8, 6))
         portfolio_df.set_index('Activo')["Valor de la posición"].plot.pie(
-            autopct='%1.1f%%', ax=ax, figsize=(6, 6), startangle=90
+            autopct='%1.1f%%', ax=ax, startangle=90, textprops={'fontsize': 10}
         )
         ax.set_ylabel("")
         ax.set_title("Distribución del Valor del Portfolio")
         st.pyplot(fig)
 
 else:
-    st.info("Todavía no agregaste activos al portfolio.")
+    st.info("📦 Todavía no agregaste activos al portfolio.")
