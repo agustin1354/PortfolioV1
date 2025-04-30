@@ -41,16 +41,11 @@ def load_portfolio():
             return json.load(f)
     return []
 
-def marcar_reset_sidebar():
-    """Marca que es necesario reiniciar el sidebar."""
-    st.session_state["reset_sidebar"] = True
-
 # ----------------------
 # Inicialización de estados
 # ----------------------
 
 if "initialized" not in st.session_state:
-    # Inicializar todos los estados necesarios
     st.session_state["portfolio"] = load_portfolio()
     st.session_state["tipo_activo"] = ""
     st.session_state["selected_activo"] = ""
@@ -60,13 +55,8 @@ if "initialized" not in st.session_state:
 
 # Ejecutar el reset si está activado
 if st.session_state["reset_sidebar"]:
-    # Debugging output
-    st.write("Reset sidebar triggered. Rerunning app...")
-
-    # Reset the state to prevent infinite loops
-    st.session_state["reset_sidebar"] = False
-
-    # Trigger rerun safely
+    st.write("Rerunning app due to reset_sidebar...")  # Debugging log
+    st.session_state["reset_sidebar"] = False  # Prevent infinite rerun loop
     st.experimental_rerun()
 
 # ----------------------
@@ -122,7 +112,7 @@ if st.sidebar.button("Agregar al portfolio"):
                     "Precio actual": precio,
                     "Valor de la posición": cantidad * precio
                 })
-            marcar_reset_sidebar()
+            st.session_state["reset_sidebar"] = True  # Trigger rerun
         except IndexError:
             st.error("Error al obtener el precio del activo seleccionado.")
     else:
@@ -135,7 +125,7 @@ if st.sidebar.button("🔄 Reiniciar Portfolio"):
     if os.path.exists("portfolio.json"):
         os.remove("portfolio.json")
     st.success("Portfolio reiniciado.")
-    marcar_reset_sidebar()
+    st.session_state["reset_sidebar"] = True
 
 if st.sidebar.button("📂 Guardar Portfolio"):
     save_portfolio(st.session_state["portfolio"])
@@ -164,12 +154,12 @@ if st.session_state["portfolio"]:
                 if st.button(f"Actualizar {item['Activo']}", key=f"update_{idx}"):
                     item["Cantidad"] = nueva_cantidad
                     item["Valor de la posición"] = nueva_cantidad * item["Precio actual"]
-                    marcar_reset_sidebar()
+                    st.session_state["reset_sidebar"] = True
 
             with col2:
                 if st.button(f"🗑️ Borrar {item['Activo']}", key=f"delete_{idx}"):
                     st.session_state["portfolio"].pop(idx)
-                    marcar_reset_sidebar()
+                    st.session_state["reset_sidebar"] = True
 
             with col3:
                 st.metric(label="Valor actual", value=f"${item['Valor de la posición']:,.2f}")
