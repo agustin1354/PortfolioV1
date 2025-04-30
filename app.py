@@ -6,8 +6,16 @@ import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="Portfolio Tracker", page_icon="💰", layout="wide")
 
-# Reiniciar la app si se activó el reset
-if st.session_state.get("reset_sidebar", False):
+# ----------------------
+# Reinicio controlado
+# ----------------------
+
+# Asegurarse de inicializar session_state antes del rerun
+if "reset_sidebar" not in st.session_state:
+    st.session_state["reset_sidebar"] = False
+
+# Ejecutar rerun si se activó el reset del sidebar
+if st.session_state["reset_sidebar"]:
     st.session_state["reset_sidebar"] = False
     st.experimental_rerun()
 
@@ -47,7 +55,7 @@ def load_portfolio():
     return []
 
 def reset_sidebar():
-    """Marca la bandera para reiniciar los inputs en el siguiente ciclo."""
+    """Marca la bandera para reiniciar los inputs en el próximo ciclo."""
     st.session_state["reset_sidebar"] = True
 
 # ----------------------
@@ -56,19 +64,15 @@ def reset_sidebar():
 
 st.title("💰 Portfolio Tracker")
 
-# Ejecutar rerun si se activó el reset del sidebar
-if st.session_state.get("reset_sidebar", False):
-    reset_sidebar()
-
-# Inicializar session_state si no existe
-if "portfolio" not in st.session_state:
-    st.session_state["portfolio"] = load_portfolio()
-if "tipo_activo" not in st.session_state:
-    st.session_state["tipo_activo"] = ""
-if "selected_activo" not in st.session_state:
-    st.session_state["selected_activo"] = ""
-if "cantidad_input" not in st.session_state:
-    st.session_state["cantidad_input"] = 0
+# Inicializar valores en session_state si no existen
+for key, default in {
+    "portfolio": load_portfolio(),
+    "tipo_activo": "",
+    "selected_activo": "",
+    "cantidad_input": 0
+}.items():
+    if key not in st.session_state:
+        st.session_state[key] = default
 
 # Sidebar para agregar posiciones
 st.sidebar.header("Agregar una posición")
@@ -117,7 +121,6 @@ if st.sidebar.button("Agregar al portfolio"):
                     "Precio actual": precio,
                     "Valor de la posición": cantidad * precio
                 })
-            # Resetear inputs
             reset_sidebar()
         except IndexError:
             st.error("Error al obtener el precio del activo seleccionado.")
