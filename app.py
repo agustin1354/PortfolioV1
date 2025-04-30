@@ -42,6 +42,7 @@ def load_portfolio():
     return []
 
 def marcar_reset_sidebar():
+    """Marca que es necesario reiniciar el sidebar."""
     st.session_state["reset_sidebar"] = True
 
 # ----------------------
@@ -62,7 +63,7 @@ if st.session_state["reset_sidebar"]:
     st.session_state["selected_activo"] = ""
     st.session_state["cantidad_input"] = 0
     st.session_state["reset_sidebar"] = False
-    st.experimental_rerun()
+    st.experimental_rerun()  # Reinicia la aplicación desde arriba
 
 # ----------------------
 # UI
