@@ -39,7 +39,7 @@ def process_cedears_data(data):
     return df[["nombre", "precio"]]
 
 def load_data(tipo):
-    archivo = "data/bonos.json" if tipo == "BONOS" else "data/cedears.json"
+    archivo = "bonos.json" if tipo == "BONOS" else "cedears.json"
     data = load_json_file(archivo)
 
     if tipo == "CEDEARS":
