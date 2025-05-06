@@ -211,30 +211,36 @@ if st.session_state["portfolio"]:
         st.markdown(f"### {tipo_activo}")
         grupo = grupo.reset_index(drop=True)
 
-        # Añadir columna de selección y ocultar índice
+        # Añadir columna de selección
         grupo["Seleccionar"] = False
 
-        # Usamos st.data_editor con edición automática
+        # Aplicar estilo CSS para centrar contenido y ajustar anchos
+        styled_grupo = grupo[["Seleccionar", "Activo", "Cantidad", "Precio actual", "Valor de la posición"]].style.set_properties(**{
+            'text-align': 'center'
+        }).set_table_styles([
+            dict(selector='th', props=[('text-align', 'center')]),
+            dict(selector='td', props=[('padding', '8px')])
+        ])
+
         edited_df = st.data_editor(
-            grupo[["Seleccionar", "Activo", "Cantidad", "Precio actual", "Valor de la posición"]],
+            styled_grupo,
             column_config={
                 "Seleccionar": st.column_config.CheckboxColumn("Eliminar"),
-                "Cantidad": st.column_config.NumberColumn("Cantidad", min_value=0, step=1),
-                "Precio actual": st.column_config.NumberColumn("Precio actual", disabled=True),
-                "Valor de la posición": st.column_config.NumberColumn("Valor", disabled=True)
+                "Activo": st.column_config.TextColumn("Activo", width="medium", disabled=True),
+                "Cantidad": st.column_config.NumberColumn("Cantidad", min_value=0, step=1, width="small"),
+                "Precio actual": st.column_config.NumberColumn("Precio actual", disabled=True, width="small"),
+                "Valor de la posición": st.column_config.NumberColumn("Valor", disabled=True, width="small"),
             },
             hide_index=True,
             key=f"editor_{tipo_activo}",
-            on_change=None,
             use_container_width=True,
             num_rows="fixed"
         )
 
-        # Actualizar automáticamente si cambia alguna cantidad
+        # Detectar cambios en las cantidades
         original_grupo = grupo[["Activo", "Cantidad"]]
         edited_grupo = edited_df[["Activo", "Cantidad"]]
 
-        # Detectar cambios en las cantidades
         cambios = original_grupo.merge(edited_grupo, on="Activo", how="inner", suffixes=("_old", "_new"))
         cambios = cambios[cambios["Cantidad_old"] != cambios["Cantidad_new"]]
 
@@ -249,6 +255,10 @@ if st.session_state["portfolio"]:
         st.session_state["eliminar_activos"] += [
             {"Tipo": tipo_activo, "Activo": activo} for activo in seleccionados
         ]
+
+    # Recalculamos el total nuevamente tras posibles modificaciones
+    portfolio_df = pd.DataFrame(st.session_state["portfolio"])
+    total_valor = portfolio_df["Valor de la posición"].sum()
 
     # Botón para eliminar todos los seleccionados
     if st.button("🗑️ Eliminar Seleccionados", type="primary", use_container_width=True):
