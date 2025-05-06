@@ -1,0 +1,14 @@
+/* style.css */
+.stDataFrame {
+    text-align: center !important;
+}
+
+.stDataFrame td {
+    text-align: center !important;
+    padding: 8px !important;
+}
+
+.stDataFrame th {
+    text-align: center !important;
+    background-color: #f0f2f6 !important;
+}
