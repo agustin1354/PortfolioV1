@@ -1,5 +1,4 @@
 import streamlit as st
-from streamlit_jsevents import jsevents  # Necesitas instalar: pip install streamlit-jsevents
 import pandas as pd
 import json
 import os
@@ -171,7 +170,7 @@ with st.sidebar:
             save_portfolio(st.session_state["portfolio"])
 
 # ----------------------
-# Mostrar Portfolio con edición automática
+# Mostrar Portfolio
 # ----------------------
 
 st.title("📁 Mi Portfolio")
@@ -186,126 +185,86 @@ if st.session_state["portfolio"]:
     portfolio_df = pd.DataFrame(st.session_state["portfolio"])
     tipos_grupos = portfolio_df.groupby("Tipo")
 
-    st.session_state["eliminar_activos"] = []
-
     # Estilo CSS
-    html_style = """
+    st.markdown("""
     <style>
-        .styled-table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: center;
-            font-family: Arial, sans-serif;
-            margin-bottom: 16px;
-        }
         .styled-table th, .styled-table td {
-            padding: 10px;
-            border: 1px solid #ddd;
             text-align: center;
         }
-        .styled-table th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-        .checkbox-column {
-            width: 80px;
-        }
-        .activo-column {
-            width: 200px;
-        }
-        .cantidad-column {
-            width: 100px;
-        }
-        .precio-column, .valor-column {
-            width: 120px;
-        }
-        input[type="number"] {
+        .styled-table input[type="number"] {
             width: 80px;
             text-align: center;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            padding: 4px;
         }
     </style>
-    """
-    st.markdown(html_style, unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
     for tipo_activo, grupo in tipos_grupos:
         st.markdown(f"### {tipo_activo}")
         grupo = grupo.reset_index(drop=True)
 
         grupo["Seleccionar"] = False
-        grupo["ID"] = grupo.index
 
-        html_table = "<table class='styled-table'><thead><tr>"
-        html_table += "<th class='checkbox-column'>Eliminar</th>"
-        html_table += "<th class='activo-column'>Activo</th>"
-        html_table += "<th class='cantidad-column'>Cantidad</th>"
-        html_table += "<th class='precio-column'>Precio Actual</th>"
-        html_table += "<th class='valor-column'>Valor</th>"
-        html_table += "</tr></thead><tbody>"
+        edited_df = st.data_editor(
+            grupo[["Seleccionar", "Activo", "Cantidad", "Precio actual", "Valor de la posición"]],
+            column_config={
+                "Seleccionar": st.column_config.CheckboxColumn("Eliminar"),
+                "Activo": st.column_config.TextColumn("Activo", disabled=True),
+                "Cantidad": st.column_config.NumberColumn("Cantidad", min_value=0, step=1),
+                "Precio actual": st.column_config.NumberColumn("Precio", disabled=True),
+                "Valor de la posición": st.column_config.NumberColumn("Valor", disabled=True),
+            },
+            hide_index=True,
+            key=f"editor_{tipo_activo}",
+            use_container_width=True,
+            num_rows="fixed"
+        )
 
-        for idx, row in grupo.iterrows():
-            activo = row["Activo"]
-            cantidad_id = f"{tipo_activo}_{idx}"
-            checkbox_id = f"chk_{tipo_activo}_{idx}"
+        # Detectar cambios
+        original_grupo = grupo[["Activo", "Cantidad"]]
+        edited_grupo = edited_df[["Activo", "Cantidad"]]
 
-            html_table += f"""
-                <tr>
-                    <td><input type="checkbox" id="{checkbox_id}" /></td>
-                    <td>{activo}</td>
-                    <td><input type="number" id="{cantidad_id}" value="{int(row['Cantidad'])}" min="0" onkeydown="handleKey(event, '{cantidad_id}', '{activo}', '{tipo_activo}')" onblur="handleBlur('{cantidad_id}', '{activo}', '{tipo_activo}')"></td>
-                    <td>${row['Precio actual']:.2f}</td>
-                    <td>${row['Valor de la posición']:.2f}</td>
-                </tr>
-            """
+        cambios = original_grupo.merge(edited_grupo, on="Activo", how="inner", suffixes=("_old", "_new"))
+        cambios = cambios[cambios["Cantidad_old"] != cambios["Cantidad_new"]]
 
-        html_table += "</tbody></table>"
-        html_script = """
-        <script>
-            function handleKey(e, id, activo, tipo) {
-                if (e.key === 'Enter') {
-                    const val = document.getElementById(id).value;
-                    Streamlit.events.emit('customEvent', {
-                        type: 'update',
-                        payload: { id, activo, tipo, cantidad: parseInt(val) }
-                    });
-                }
-            }
+        if not cambios.empty:
+            for _, row in cambios.iterrows():
+                for item in st.session_state["portfolio"]:
+                    if item["Activo"] == row["Activo"]:
+                        item["Cantidad"] = int(row["Cantidad_new"])
+                        item["Valor de la posición"] = round(item["Cantidad"] * item["Precio actual"], 2)
+            st.rerun()
 
-            function handleBlur(id, activo, tipo) {
-                const val = document.getElementById(id).value;
-                Streamlit.events.emit('customEvent', {
-                    type: 'update',
-                    payload: { id, activo, tipo, cantidad: parseInt(val) }
-                });
-            }
+        # Guardar los activos seleccionados para eliminar
+        seleccionados = edited_df[edited_df["Seleccionar"]]["Activo"].tolist()
+        st.session_state["eliminar_activos"] += [
+            {"Tipo": tipo_activo, "Activo": activo} for activo in seleccionados
+        ]
 
-            function collectDeletes() {
-                const checks = document.querySelectorAll("input[type='checkbox']");
-                let deletes = [];
-                checks.forEach(chk => {
-                    if (chk.checked && chk.id.startsWith("chk_")) {
-                        const parts = chk.id.split("_");
-                        deletes.push({ tipo: parts[1], activo: parts.slice(2).join("_") });
-                    }
-                });
-                Streamlit.events.emit('customEvent', {
-                    type: 'delete',
-                    payload: deletes
-                });
-            }
-        </script>
-        <button onclick="collectDeletes()" style="margin-top: 10px;">🗑️ Eliminar Seleccionados</button>
-        """
-        jsevents(html=html_table + html_script)
+    # Botón para eliminar seleccionados
+    if st.button("🗑️ Eliminar Seleccionados", type="primary", use_container_width=True):
+        eliminar_lista = st.session_state["eliminar_activos"]
+        if eliminar_lista:
+            st.session_state["portfolio"] = [
+                item for item in st.session_state["portfolio"]
+                if not any(
+                    elim["Activo"] == item["Activo"] and elim["Tipo"] == item["Tipo"]
+                    for elim in eliminar_lista
+                )
+            ]
+            st.session_state["eliminar_activos"] = []
+            st.success("🗑️ Activos seleccionados eliminados.")
+            st.rerun()
+        else:
+            st.warning("⚠️ No hay activos seleccionados para eliminar.")
 
+    # Resumen del Portfolio
+    portfolio_df = pd.DataFrame(st.session_state["portfolio"])
     total_valor = portfolio_df["Valor de la posición"].sum()
-
     st.markdown("---")
     st.markdown("### 📈 Resumen del Portfolio")
     st.metric("Valor Total del Portfolio", f"${total_valor:,.2f}")
 
+    # Gráfico
     fig, ax = plt.subplots(figsize=(8, 6))
     portfolio_df.set_index('Activo')["Valor de la posición"].plot.pie(
         autopct='%1.1f%%', ax=ax, startangle=90, textprops={'fontsize': 10}
@@ -316,31 +275,3 @@ if st.session_state["portfolio"]:
 
 else:
     st.info("📦 Todavía no agregaste activos al portfolio.")
-
-# ----------------------
-# Manejo de eventos JS
-# ----------------------
-
-if "event" in st.query_params:
-    event = st.query_params["event"]
-    payload = json.loads(st.query_params["payload"])
-
-    if event == "update":
-        for item in st.session_state["portfolio"]:
-            if item["Activo"] == payload["activo"] and item["Tipo"] == payload["tipo"]:
-                item["Cantidad"] = int(payload["cantidad"])
-                item["Valor de la posición"] = round(item["Cantidad"] * item["Precio actual"], 2)
-        st.rerun()
-
-    elif event == "delete":
-        eliminar_lista = payload
-        if eliminar_lista:
-            st.session_state["portfolio"] = [
-                item for item in st.session_state["portfolio"]
-                if not any(
-                    elim["activo"] == item["Activo"] and elim["tipo"] == item["Tipo"]
-                    for elim in eliminar_lista
-                )
-            ]
-            st.success("🗑️ Activos seleccionados eliminados.")
-            st.rerun()
