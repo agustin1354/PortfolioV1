@@ -91,6 +91,7 @@ if "initialized" not in st.session_state:
     st.session_state["tipo_activo"] = ""
     st.session_state["selected_activo"] = ""
     st.session_state["cantidad_input"] = 0
+    st.session_state["eliminar_activos"] = []
     st.session_state["initialized"] = True
 
 # Cargar datos al inicio si no están en caché
@@ -109,7 +110,6 @@ if st.session_state.get("reset_sidebar", False):
 # ----------------------
 
 st.title("💰 Portfolio Tracker")
-# st.session_state.clear()
 
 # Sidebar - Agregar posiciones
 with st.sidebar:
@@ -181,7 +181,7 @@ with st.sidebar:
             save_portfolio(st.session_state["portfolio"])
 
 # ----------------------
-# Mostrar Portfolio
+# Mostrar Portfolio - Versión Tabla Agrupada + Edición Automática + Múltiples Eliminaciones
 # ----------------------
 
 st.subheader("📁 Mi Portfolio")
@@ -194,52 +194,92 @@ if st.session_state["portfolio"]:
         st.session_state.cached_cedears
     )
 
-    total_valor = sum(item["Valor de la posición"] for item in st.session_state["portfolio"])
+    # Convertir a DataFrame
+    portfolio_df = pd.DataFrame(st.session_state["portfolio"])
 
-    for idx, item in enumerate(st.session_state["portfolio"]):
-        with st.expander(
-            f"{item['Tipo']} - {item['Activo']} - {item['Cantidad']} títulos - ${item['Valor de la posición']:,.2f}",
-            expanded=False
-        ):
-            col1, col2, col3 = st.columns([2, 2, 1])
+    # Calcular total
+    total_valor = portfolio_df["Valor de la posición"].sum()
 
-            with col1:
-                nueva_cantidad = st.number_input(
-                    f"Editar cantidad ({item['Activo']})",
-                    min_value=0,
-                    value=item['Cantidad'],
-                    step=1,
-                    key=f"editar_{idx}"
+    # Agrupar por tipo de activo
+    tipos_grupos = portfolio_df.groupby("Tipo")
+
+    # Variable temporal para guardar IDs a eliminar
+    st.session_state["eliminar_activos"] = []
+
+    # Mostrar cada grupo en su propia tabla
+    for tipo_activo, grupo in tipos_grupos:
+        st.markdown(f"### {tipo_activo}")
+        grupo = grupo.reset_index(drop=True)
+
+        # Añadir columna de selección y ocultar índice
+        grupo["Seleccionar"] = False
+
+        # Usamos st.data_editor con edición automática
+        edited_df = st.data_editor(
+            grupo[["Seleccionar", "Activo", "Cantidad", "Precio actual", "Valor de la posición"]],
+            column_config={
+                "Seleccionar": st.column_config.CheckboxColumn("Eliminar"),
+                "Cantidad": st.column_config.NumberColumn("Cantidad", min_value=0, step=1),
+                "Precio actual": st.column_config.NumberColumn("Precio actual", disabled=True),
+                "Valor de la posición": st.column_config.NumberColumn("Valor", disabled=True)
+            },
+            hide_index=True,
+            key=f"editor_{tipo_activo}",
+            on_change=None,
+            use_container_width=True,
+            num_rows="fixed"
+        )
+
+        # Actualizar automáticamente si cambia alguna cantidad
+        original_grupo = grupo[["Activo", "Cantidad"]]
+        edited_grupo = edited_df[["Activo", "Cantidad"]]
+
+        # Detectar cambios en las cantidades
+        cambios = original_grupo.merge(edited_grupo, on="Activo", how="inner", suffixes=("_old", "_new"))
+        cambios = cambios[cambios["Cantidad_old"] != cambios["Cantidad_new"]]
+
+        for _, row in cambios.iterrows():
+            for item in st.session_state["portfolio"]:
+                if item["Activo"] == row["Activo"]:
+                    item["Cantidad"] = int(row["Cantidad_new"])
+                    item["Valor de la posición"] = round(item["Cantidad"] * item["Precio actual"], 2)
+
+        # Guardar los activos seleccionados para eliminar
+        seleccionados = edited_df[edited_df["Seleccionar"]]["Activo"].tolist()
+        st.session_state["eliminar_activos"] += [
+            {"Tipo": tipo_activo, "Activo": activo} for activo in seleccionados
+        ]
+
+    # Botón para eliminar todos los seleccionados
+    if st.button("🗑️ Eliminar Seleccionados", type="primary", use_container_width=True):
+        eliminar_lista = st.session_state["eliminar_activos"]
+        if eliminar_lista:
+            st.session_state["portfolio"] = [
+                item for item in st.session_state["portfolio"]
+                if not any(
+                    elim["Activo"] == item["Activo"] and elim["Tipo"] == item["Tipo"]
+                    for elim in eliminar_lista
                 )
-                if st.button(f"Actualizar 💾", key=f"update_{idx}", use_container_width=True):
-                    item["Cantidad"] = nueva_cantidad
-                    item["Valor de la posición"] = round(nueva_cantidad * item["Precio actual"], 2)
-                    st.session_state.reset_sidebar = True
-                    st.toast("🔁 Valor actualizado.")
-
-            with col2:
-                if st.button(f"Eliminar 🗑️", key=f"delete_{idx}", use_container_width=True):
-                    st.session_state["portfolio"].pop(idx)
-                    st.session_state.reset_sidebar = True
-                    st.toast("🗑️ Elemento eliminado.")
-
-            with col3:
-                st.metric(label="Valor actual", value=f"${item['Valor de la posición']:,.2f}")
+            ]
+            st.session_state["eliminar_activos"] = []
+            st.success("🗑️ Activos seleccionados eliminados.")
+            st.rerun()
+        else:
+            st.warning("⚠️ No hay activos seleccionados para eliminar.")
 
     # Resumen del Portfolio
-    st.subheader("📈 Resumen del Portfolio")
+    st.markdown("---")
+    st.markdown("### 📈 Resumen del Portfolio")
     st.metric("Valor Total del Portfolio", f"${total_valor:,.2f}")
 
     # Gráfico de distribución
-    portfolio_df = pd.DataFrame(st.session_state["portfolio"])
-    if not portfolio_df.empty:
-        fig, ax = plt.subplots(figsize=(8, 6))
-        portfolio_df.set_index('Activo')["Valor de la posición"].plot.pie(
-            autopct='%1.1f%%', ax=ax, startangle=90, textprops={'fontsize': 10}
-        )
-        ax.set_ylabel("")
-        ax.set_title("Distribución del Valor del Portfolio")
-        st.pyplot(fig)
+    fig, ax = plt.subplots(figsize=(8, 6))
+    portfolio_df.set_index('Activo')["Valor de la posición"].plot.pie(
+        autopct='%1.1f%%', ax=ax, startangle=90, textprops={'fontsize': 10}
+    )
+    ax.set_ylabel("")
+    ax.set_title("Distribución del Valor del Portfolio")
+    st.pyplot(fig)
 
 else:
     st.info("📦 Todavía no agregaste activos al portfolio.")
