@@ -3,4 +3,3 @@ playwright
 pandas
 matplotlib
 asyncio
-streamlit-jsevents
