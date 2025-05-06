@@ -237,24 +237,27 @@ if st.session_state["portfolio"]:
             num_rows="fixed"
         )
 
-        # Detectar cambios en las cantidades
-        original_grupo = grupo[["Activo", "Cantidad"]]
-        edited_grupo = edited_df[["Activo", "Cantidad"]]
+          # Detectar cambios en las cantidades
+    original_grupo = grupo[["Activo", "Cantidad"]]
+    edited_grupo = edited_df[["Activo", "Cantidad"]]
 
-        cambios = original_grupo.merge(edited_grupo, on="Activo", how="inner", suffixes=("_old", "_new"))
-        cambios = cambios[cambios["Cantidad_old"] != cambios["Cantidad_new"]]
+    cambios = original_grupo.merge(edited_grupo, on="Activo", how="inner", suffixes=("_old", "_new"))
+    cambios = cambios[cambios["Cantidad_old"] != cambios["Cantidad_new"]]
 
+    if not cambios.empty:
         for _, row in cambios.iterrows():
             for item in st.session_state["portfolio"]:
                 if item["Activo"] == row["Activo"]:
                     item["Cantidad"] = int(row["Cantidad_new"])
                     item["Valor de la posición"] = round(item["Cantidad"] * item["Precio actual"], 2)
+        # Forzar rerun para actualizar el total y el gráfico
+        st.rerun()
 
-        # Guardar los activos seleccionados para eliminar
-        seleccionados = edited_df[edited_df["Seleccionar"]]["Activo"].tolist()
-        st.session_state["eliminar_activos"] += [
-            {"Tipo": tipo_activo, "Activo": activo} for activo in seleccionados
-        ]
+    # Guardar los activos seleccionados para eliminar
+    seleccionados = edited_df[edited_df["Seleccionar"]]["Activo"].tolist()
+    st.session_state["eliminar_activos"] += [
+        {"Tipo": tipo_activo, "Activo": activo} for activo in seleccionados
+    ]
 
     # Recalculamos el total nuevamente tras posibles modificaciones
     portfolio_df = pd.DataFrame(st.session_state["portfolio"])
