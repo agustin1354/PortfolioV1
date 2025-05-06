@@ -223,19 +223,23 @@ if st.session_state["portfolio"]:
         ])
 
         edited_df = st.data_editor(
-            styled_grupo,
+            grupo[["Seleccionar", "Activo", "Cantidad", "Precio actual", "Valor de la posición"]],
             column_config={
-                "Seleccionar": st.column_config.CheckboxColumn("Eliminar"),
+                "Seleccionar": st.column_config.CheckboxColumn("Eliminar", width="small", default=False),
                 "Activo": st.column_config.TextColumn("Activo", width="medium", disabled=True),
                 "Cantidad": st.column_config.NumberColumn("Cantidad", min_value=0, step=1, width="small"),
-                "Precio actual": st.column_config.NumberColumn("Precio actual", disabled=True, width="small"),
-                "Valor de la posición": st.column_config.NumberColumn("Valor", disabled=True, width="small"),
+                "Precio actual": st.column_config.NumberColumn("Precio", width="small", disabled=True),
+                "Valor de la posición": st.column_config.NumberColumn("Valor", width="small", disabled=True),
             },
             hide_index=True,
             key=f"editor_{tipo_activo}",
             use_container_width=True,
             num_rows="fixed"
         )
+
+        # Estilo adicional para centrar el contenido (solo funciona parcialmente en data_editor)
+        with open("style.css") as f:
+            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
           # Detectar cambios en las cantidades
     original_grupo = grupo[["Activo", "Cantidad"]]
